@@ -60,7 +60,20 @@ npm run lint
 npm run build
 ```
 
-개발 중 백엔드 주소를 바꾸려면 `NEXT_PUBLIC_API_BASE_URL`을 설정하세요. 기본값은 `http://localhost:8000`입니다.
+개발 중 백엔드 주소를 바꾸려면 `NEXT_PUBLIC_API_BASE_URL`을 설정하세요. 기본값은 `http://127.0.0.1:8000`입니다.
+
+Backend + Frontend API contract 로컬 실행:
+
+```bash
+cd backend
+uv run fastapi dev src/cafe_pickup_hub/main.py --host 127.0.0.1 --port 8001
+
+cd frontend
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8001 npm run dev -- --hostname 127.0.0.1 --port 3002
+API_CONTRACT_EXPECT_SOURCE=api ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm run smoke:api-contract
+```
+
+Backend가 꺼져 있거나 `/api/v1` contract parsing에 실패하면 frontend는 demo fallback을 사용하되, 화면에 `API 상태: demo fallback`과 이유를 표시합니다.
 
 ## MVP 수익/운영 가정
 

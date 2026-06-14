@@ -32,3 +32,15 @@ Backward-compatible legacy endpoints:
 - `GET /api/hubs`
 - `GET /api/hubs/{hub_id}`
 - `GET /api/listings`
+
+## Frontend contract smoke
+
+Frontend Phase 4는 `/api/v1/hubs`와 `/api/v1/pickup-requests`를 읽습니다.
+
+```bash
+uv run fastapi dev src/cafe_pickup_hub/main.py --host 127.0.0.1 --port 8001
+
+cd ../frontend
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8001 npm run dev -- --hostname 127.0.0.1 --port 3002
+API_CONTRACT_EXPECT_SOURCE=api ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm run smoke:api-contract
+```

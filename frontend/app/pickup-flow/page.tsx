@@ -2,22 +2,28 @@ import Link from "next/link"
 
 import { IconMotif } from "@/components/uiux/IconMotif"
 import { StatusPill } from "@/components/uiux/StatusPill"
-import { flowSteps } from "@/lib/uiux-data"
+import { getPickupFlowData } from "@/lib/api-view-models"
 
-export default function PickupFlowPage() {
+export default async function PickupFlowPage() {
+  const { sourceView, steps } = await getPickupFlowData()
+
   return (
     <main className="flow-stage">
       <header className="flow-header">
         <div>
           <p className="eyebrow">Safe pickup flow</p>
           <h1>Hub 발견부터 보안 픽업까지 한 번에.</h1>
+          <div className="api-source-banner api-source-banner--flow" data-api-source={sourceView.source.kind}>
+            <strong>{sourceView.label}</strong>
+            <span>{sourceView.detail}</span>
+          </div>
         </div>
         <Link href="/" className="ghost-button">
           홈으로
         </Link>
       </header>
       <section className="flow-board">
-        {flowSteps.map((step, index) => (
+        {steps.map((step, index) => (
           <article key={step.title} className="flow-phone">
             <div className="flow-phone__top">
               <span>{step.eyebrow}</span>
@@ -30,7 +36,7 @@ export default function PickupFlowPage() {
               <strong>{step.detailTitle}</strong>
               <span>{step.detailMeta}</span>
             </div>
-            <Link href={index === flowSteps.length - 1 ? "/friend-permission" : "/pickup-flow"} className="primary-button">
+            <Link href={index === steps.length - 1 ? "/friend-permission" : "/pickup-flow"} className="primary-button">
               {step.action}
             </Link>
           </article>
