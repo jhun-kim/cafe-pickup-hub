@@ -32,6 +32,8 @@ Versioned endpoints:
 - `POST /api/v1/pickup-authorizations/{authorization_id}/consume`
 - `GET /api/v1/host/operations`
 - `POST /api/v1/host/operations/{pickup_request_id}/actions`
+- `GET /api/v1/admin/trust`
+- `POST /api/v1/admin/trust/incidents/{incident_id}/actions`
 
 Backward-compatible legacy endpoints:
 
@@ -75,4 +77,12 @@ Backend 직접 friend authorization smoke:
 curl -i -X POST http://127.0.0.1:8001/api/v1/pickup-authorizations \
   -H 'content-type: application/json' \
   -d '{"pickup_request_id":"pickup-ready-001","authorized_picker_name":"Minji Lee","expires_at":"2026-06-14T20:30:00+09:00"}'
+```
+
+Backend 직접 admin trust action smoke:
+
+```bash
+curl -i -X POST http://127.0.0.1:8001/api/v1/admin/trust/incidents/incident-code-mismatch/actions \
+  -H 'content-type: application/json' \
+  -d '{"action":"start_review","admin_user_id":"admin-ops-1","note":"Manual trust review started"}'
 ```

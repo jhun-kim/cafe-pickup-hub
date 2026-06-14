@@ -3,11 +3,27 @@ const baseUrl = process.env.ROUTE_SMOKE_BASE_URL ?? "http://127.0.0.1:3002"
 const checks = [
   {
     path: "/",
-    markers: ["근처 안전 카페 픽업 허브", "API 상태", "data-api-source=", "href=\"/pickup-flow\""],
+    markers: [
+      "근처 안전 카페 픽업 허브",
+      "API 상태",
+      "data-api-source=",
+      "href=\"/pickup-flow\"",
+      "data-noninteractive=\"home-alert-preview\"",
+      "data-noninteractive=\"home-location-preview\"",
+      "data-noninteractive=\"home-search-preview\"",
+    ],
   },
   {
     path: "/pickup-flow",
-    markers: ["Hub 발견부터 보안 픽업까지", "API 상태", "data-api-source=", "픽업 예약 시작", "href=\"/friend-permission\""],
+    markers: [
+      "Hub 발견부터 보안 픽업까지",
+      "API 상태",
+      "data-api-source=",
+      "픽업 예약 시작",
+      "id=\"pickup-booking\"",
+      "href=\"#pickup-booking\"",
+      "href=\"/friend-permission\"",
+    ],
   },
   {
     path: "/friend-permission",

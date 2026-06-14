@@ -67,11 +67,18 @@ if (baseUrl) {
   const routeChecks = [
     {
       path: "/",
-      markers: ["data-api-source=", homeSourceMarker, "API 상태"],
+      markers: [
+        "data-api-source=",
+        homeSourceMarker,
+        "API 상태",
+        "data-noninteractive=\"home-alert-preview\"",
+        "data-noninteractive=\"home-location-preview\"",
+        "data-noninteractive=\"home-search-preview\"",
+      ],
     },
     {
       path: "/pickup-flow",
-      markers: ["data-api-source=", flowSourceMarker, "API 상태", "data-booking-mode="],
+      markers: ["data-api-source=", flowSourceMarker, "API 상태", "data-booking-mode=", "id=\"pickup-booking\"", "href=\"#pickup-booking\""],
     },
     {
       path: "/host",

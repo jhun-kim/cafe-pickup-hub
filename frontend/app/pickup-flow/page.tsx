@@ -44,7 +44,7 @@ export default async function PickupFlowPage({ searchParams }: PickupFlowPagePro
               <strong>{step.detailTitle}</strong>
               <span>{step.detailMeta}</span>
             </div>
-            <Link href={index === steps.length - 1 ? "/friend-permission" : "/pickup-flow"} className="primary-button">
+            <Link href={index === steps.length - 1 ? "/friend-permission" : "#pickup-booking"} className="primary-button">
               {step.action}
             </Link>
           </article>

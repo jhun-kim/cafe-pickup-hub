@@ -16,19 +16,19 @@ export default async function Home() {
           <h1>근처 안전 카페 픽업 허브</h1>
           <p>집 앞 분실 걱정 없이 오늘 받을 카페 보관 공간을 찾으세요.</p>
         </div>
-        <button className="round-button" type="button" aria-label="알림">
+        <span className="round-button" data-noninteractive="home-alert-preview" aria-hidden="true">
           <IconMotif index={3} label="" size="sm" />
-        </button>
+        </span>
       </header>
 
       <div className="search-row">
-        <button className="location-chip" type="button">
+        <span className="location-chip" data-noninteractive="home-location-preview">
           <IconMotif index={0} label="" size="sm" />
           서울 강남구 역삼동
-        </button>
-        <button className="round-button" type="button" aria-label="검색">
+        </span>
+        <span className="round-button" data-noninteractive="home-search-preview" aria-hidden="true">
           <IconMotif index={4} label="" size="sm" />
-        </button>
+        </span>
       </div>
 
       <section className="hero-card hero-card--home">
