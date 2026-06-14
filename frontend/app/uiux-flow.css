@@ -22,7 +22,7 @@
 
 .flow-board {
   display: grid;
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
   gap: 20px;
   width: min(100%, 1120px);
 }
@@ -55,7 +55,7 @@
 
 .flow-phone h2 {
   margin: 0;
-  font-size: 2.35rem;
+  font-size: 2rem;
   line-height: 1.02;
   letter-spacing: -0.05em;
 }
