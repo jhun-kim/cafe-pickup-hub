@@ -89,3 +89,27 @@ export type CreatePickupRequestInput = {
   readonly pickupWindow: string
   readonly deliveryNote: string
 }
+
+export type ApiHostOperationAction = "receive_package" | "assign_storage" | "complete_handoff"
+
+export type ApiHostOperationSummary = {
+  readonly action: ApiHostOperationAction
+  readonly label: string
+  readonly priority: number
+  readonly nextAction: ApiHostOperationAction | null
+  readonly safetyNote: string
+}
+
+export type ApiHostOperationItem = {
+  readonly hub: ApiHub
+  readonly pickupRequest: ApiPickupRequest
+  readonly operation: ApiHostOperationSummary
+}
+
+export type HostOperationActionInput = {
+  readonly pickupRequestId: string
+  readonly action: ApiHostOperationAction
+  readonly storageSlotId?: string
+  readonly pickupCode?: string
+  readonly note: string
+}

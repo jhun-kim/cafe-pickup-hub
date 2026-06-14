@@ -8,6 +8,8 @@ const requiredFiles = [
   "lib/api-view-models.ts",
   "components/pickup/BookingForm.tsx",
   "app/api/pickup-requests/route.ts",
+  "components/host/HostOperationBoard.tsx",
+  "app/api/host-operations/[pickupRequestId]/actions/route.ts",
 ]
 
 for (const file of requiredFiles) {
@@ -24,6 +26,10 @@ const sourceChecks = [
   {
     file: "app/pickup-flow/page.tsx",
     markers: ["getPickupFlowData", "data-api-source", "BookingForm"],
+  },
+  {
+    file: "app/host/page.tsx",
+    markers: ["loadHostOperations", "data-api-source", "HostOperationBoard"],
   },
 ]
 
@@ -50,6 +56,10 @@ if (baseUrl) {
     {
       path: "/pickup-flow",
       markers: ["data-api-source=", flowSourceMarker, "API 상태", "data-booking-mode="],
+    },
+    {
+      path: "/host",
+      markers: ["data-api-source=", "data-host-ops-mode=", "호스트 운영 작업"],
     },
   ]
 
@@ -96,6 +106,31 @@ if (baseUrl) {
     }
 
     console.log("/api/pickup-requests create ok")
+    const createdPickupRequest = JSON.parse(created)
+
+    const hostActionResponse = await fetch(`${baseUrl}/api/host-operations/${createdPickupRequest.id}/actions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "receive_package",
+        storage_slot_id: createdPickupRequest.package.storageSlotId,
+        note: "Smoke host receive via frontend proxy",
+      }),
+    })
+
+    if (hostActionResponse.status !== 200) {
+      throw new Error(`frontend host action proxy returned ${hostActionResponse.status}`)
+    }
+
+    const hostAction = await hostActionResponse.text()
+    const hostActionMarkers = [createdPickupRequest.id, "\"action\":\"assign_storage\"", "\"status\":\"received\""]
+    const missingHostActionMarkers = hostActionMarkers.filter((marker) => !hostAction.includes(marker))
+
+    if (missingHostActionMarkers.length > 0) {
+      throw new Error(`frontend host action proxy missing markers: ${missingHostActionMarkers.join(", ")}`)
+    }
+
+    console.log("/api/host-operations action ok")
   }
 }
 

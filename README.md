@@ -39,6 +39,8 @@ uv run pytest -q
 - `GET /api/v1/hubs` storage slot과 trust badge를 포함한 v1 허브 목록
 - `GET /api/v1/pickup-requests` package, payment, authorization 상태를 포함한 수령 요청 목록
 - `POST /api/v1/pickup-requests` pickup request 예약 생성
+- `GET /api/v1/host/operations` host receive/store/handoff 작업 목록
+- `POST /api/v1/host/operations/{pickup_request_id}/actions` 입고 등록, 보관함 배정, 픽업 완료 action
 - `GET /health` 서비스 상태
 - `GET /api/hubs` 픽업 허브 목록
 - `GET /api/hubs/{hub_id}` 픽업 허브 상세
@@ -75,7 +77,7 @@ API_CONTRACT_EXPECT_SOURCE=api ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm ru
 ```
 
 Backend가 꺼져 있거나 `/api/v1` contract parsing에 실패하면 frontend는 demo fallback을 사용하되, 화면에 `API 상태: demo fallback`과 이유를 표시합니다.
-Demo fallback 상태에서는 실제 예약 성공을 표시하지 않고 booking creation을 차단합니다.
+Demo fallback 상태에서는 실제 예약 또는 host operation 성공을 표시하지 않고 action button을 차단합니다.
 
 ## MVP 수익/운영 가정
 

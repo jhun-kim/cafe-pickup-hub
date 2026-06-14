@@ -53,6 +53,7 @@
 3. `StorageSlot`을 선택합니다.
    - 빈 슬롯이면 `reserved` 또는 `occupied`로 전환합니다.
 4. `Package`는 `received`가 되고 `PickupRequest.ready_for_pickup`이 됩니다.
+   - Phase 6 vertical slice에서는 `POST /api/v1/host/operations/{pickup_request_id}/actions`가 `receive_package`, `assign_storage`, `complete_handoff` action을 순서대로 처리합니다.
 5. `Notification`이 `User`에게 발송됩니다.
 
 ### Storage flow

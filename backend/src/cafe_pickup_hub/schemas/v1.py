@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 
 from cafe_pickup_hub.domain.models import (
+    HostOperationAction,
     PackageStatus,
     PickupAuthorizationStatus,
     PickupRequestStatus,
@@ -86,3 +87,24 @@ class PickupRequestCreateRequest(ApiSchema):
     package_size: str = Field(min_length=1)
     pickup_window: str = Field(min_length=1)
     delivery_note: str = Field(min_length=1)
+
+
+class HostOperationActionRequest(ApiSchema):
+    action: HostOperationAction
+    storage_slot_id: str | None = Field(default=None, min_length=1)
+    pickup_code: str | None = Field(default=None, min_length=1)
+    note: str = Field(default="", max_length=240)
+
+
+class HostOperationSummaryResponse(ApiSchema):
+    action: HostOperationAction
+    label: str
+    priority: int = Field(ge=1)
+    next_action: HostOperationAction | None
+    safety_note: str
+
+
+class HostOperationItemResponse(ApiSchema):
+    hub: HubResponse
+    pickup_request: PickupRequestResponse
+    operation: HostOperationSummaryResponse

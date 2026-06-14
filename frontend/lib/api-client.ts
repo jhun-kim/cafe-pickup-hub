@@ -1,6 +1,14 @@
-import type { ApiHub, ApiPickupRequest, ApiResult, CreatePickupRequestInput } from "@/lib/api-contract"
-import { demoContracts } from "@/lib/api-demo"
+import type {
+  ApiHostOperationItem,
+  ApiHub,
+  ApiPickupRequest,
+  ApiResult,
+  CreatePickupRequestInput,
+  HostOperationActionInput,
+} from "@/lib/api-contract"
+import { demoContracts, demoHostOperations } from "@/lib/api-demo"
 import { ApiContractError } from "@/lib/api-errors"
+import { parseHostOperationList, parseHostOperationResponse } from "@/lib/host-operations-parser"
 import { parseHubList, parsePickupRequestList, parsePickupRequestResponse } from "@/lib/api-parsers"
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000"
@@ -9,6 +17,10 @@ const API_TIMEOUT_MS = 900
 export type PickupContracts = {
   readonly hubs: readonly ApiHub[]
   readonly pickupRequests: readonly ApiPickupRequest[]
+}
+
+export type HostOperationContracts = {
+  readonly operations: readonly ApiHostOperationItem[]
 }
 
 export async function loadPickupContracts(): Promise<ApiResult<PickupContracts>> {
@@ -38,6 +50,24 @@ export async function loadPickupContracts(): Promise<ApiResult<PickupContracts>>
   }
 }
 
+export async function loadHostOperations(): Promise<ApiResult<HostOperationContracts>> {
+  const apiBaseUrl = getApiBaseUrl()
+
+  try {
+    const operationsPayload = await fetchJson(apiBaseUrl, "/api/v1/host/operations")
+    const operations = parseHostOperationList(operationsPayload)
+    return {
+      data: { operations },
+      source: { kind: "api", apiBaseUrl },
+    }
+  } catch (error) {
+    if (error instanceof ApiContractError) {
+      return demoHostOperations(apiBaseUrl, error.reason)
+    }
+    throw error
+  }
+}
+
 export async function createPickupRequest(payload: CreatePickupRequestInput): Promise<ApiPickupRequest> {
   const apiBaseUrl = getApiBaseUrl()
   const responsePayload = await fetchJson(apiBaseUrl, "/api/v1/pickup-requests", {
@@ -51,6 +81,20 @@ export async function createPickupRequest(payload: CreatePickupRequestInput): Pr
     }),
   })
   return parsePickupRequestResponse(responsePayload)
+}
+
+export async function applyHostOperation(payload: HostOperationActionInput): Promise<ApiHostOperationItem> {
+  const apiBaseUrl = getApiBaseUrl()
+  const responsePayload = await fetchJson(apiBaseUrl, `/api/v1/host/operations/${payload.pickupRequestId}/actions`, {
+    method: "POST",
+    body: JSON.stringify({
+      action: payload.action,
+      storage_slot_id: payload.storageSlotId,
+      pickup_code: payload.pickupCode,
+      note: payload.note,
+    }),
+  })
+  return parseHostOperationResponse(responsePayload)
 }
 
 function getApiBaseUrl(): string {

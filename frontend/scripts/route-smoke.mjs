@@ -15,7 +15,7 @@ const checks = [
   },
   {
     path: "/host",
-    markers: ["오늘 우선 작업", "입고 등록", "픽업 완료"],
+    markers: ["오늘 우선 작업", "호스트 운영 작업", "data-api-source=", "data-host-ops-mode="],
   },
   {
     path: "/admin",

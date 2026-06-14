@@ -5,25 +5,25 @@ export function parseHubList(payload: unknown): readonly ApiHub[] {
   if (!Array.isArray(payload)) {
     throw new ApiContractError("/api/v1/hubs", "response is not an array")
   }
-  return payload.map(parseHub).filter(isPresent)
+  return payload.map(parseHubResponse).filter(isPresent)
 }
 
 export function parsePickupRequestList(payload: unknown): readonly ApiPickupRequest[] {
   if (!Array.isArray(payload)) {
     throw new ApiContractError("/api/v1/pickup-requests", "response is not an array")
   }
-  return payload.map(parsePickupRequest).filter(isPresent)
+  return payload.map(parsePickupRequestPayload).filter(isPresent)
 }
 
 export function parsePickupRequestResponse(payload: unknown): ApiPickupRequest {
-  const pickupRequest = parsePickupRequest(payload)
+  const pickupRequest = parsePickupRequestPayload(payload)
   if (pickupRequest === null) {
     throw new ApiContractError("/api/v1/pickup-requests", "response is not a pickup request")
   }
   return pickupRequest
 }
 
-function parseHub(payload: unknown): ApiHub | null {
+export function parseHubResponse(payload: unknown): ApiHub | null {
   if (!isRecord(payload)) {
     return null
   }
@@ -90,7 +90,7 @@ function parseStorageSlot(payload: unknown): ApiStorageSlot | null {
   return { id, hubId, label, status, packageSize }
 }
 
-function parsePickupRequest(payload: unknown): ApiPickupRequest | null {
+export function parsePickupRequestPayload(payload: unknown): ApiPickupRequest | null {
   if (!isRecord(payload)) {
     return null
   }

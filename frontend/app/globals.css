@@ -9,6 +9,7 @@
 @import "./uiux-admin.css";
 @import "./uiux-phase2.css";
 @import "./uiux-booking.css";
+@import "./host-operations.css";
 
 :root {
   --ink: #17201c;

@@ -1,6 +1,12 @@
 from dataclasses import dataclass
 
-from cafe_pickup_hub.domain.models import Package, PackageStatus, Payment, PickupRequest, PickupRequestStatus
+from cafe_pickup_hub.domain.models import (
+    Package,
+    PackageStatus,
+    Payment,
+    PickupRequest,
+    PickupRequestStatus,
+)
 from cafe_pickup_hub.schemas import PickupRequestCreateRequest
 from cafe_pickup_hub.services.catalog import CatalogService, get_catalog_service
 from cafe_pickup_hub.services.repository import InMemoryPickupRequestRepository
@@ -62,3 +68,7 @@ _REPOSITORY = InMemoryPickupRequestRepository(initial_pickup_requests=SAMPLE_PIC
 
 def get_pickup_request_service() -> PickupRequestService:
     return PickupRequestService(repository=_REPOSITORY, catalog_service=get_catalog_service())
+
+
+def get_pickup_request_repository() -> InMemoryPickupRequestRepository:
+    return _REPOSITORY
