@@ -84,6 +84,18 @@
   color: #31543d;
 }
 
+.admin-trust-terminal {
+  display: inline-flex;
+  justify-content: center;
+  border: 1px solid rgba(57, 42, 31, 0.12);
+  border-radius: 999px;
+  background: rgba(57, 42, 31, 0.06);
+  padding: 11px 14px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 850;
+}
+
 .admin-trust-list,
 .audit-list {
   display: grid;

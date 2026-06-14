@@ -164,7 +164,7 @@ class AdminTrustItemResponse(ApiSchema):
     incident: IncidentReportResponse
     risk: RiskRecordResponse
     latest_audit_log: AdminAuditLogResponse | None
-    recommended_action: AdminTrustAction
+    recommended_action: AdminTrustAction | None
 
 
 class AdminTrustQueueResponse(ApiSchema):

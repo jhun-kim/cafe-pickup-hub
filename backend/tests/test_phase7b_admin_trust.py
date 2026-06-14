@@ -50,3 +50,20 @@ def test_admin_trust_action_rejects_invalid_transition() -> None:
     assert first_response.status_code == 200
     assert second_response.status_code == 409
     assert "cannot transition" in second_response.json()["detail"]
+
+
+def test_admin_trust_terminal_incident_has_no_recommended_action() -> None:
+    escalate_response = client.post(
+        "/api/v1/admin/trust/incidents/incident-overdue-storage/actions",
+        json={"action": "escalate", "admin_user_id": "admin-ops-1", "note": "Escalate overdue storage"},
+    )
+    queue_response = client.get("/api/v1/admin/trust")
+
+    assert escalate_response.status_code == 200
+    assert escalate_response.json()["incident"]["status"] == "escalated"
+    assert escalate_response.json()["recommended_action"] is None
+
+    assert queue_response.status_code == 200
+    escalated_item = next(item for item in queue_response.json()["items"] if item["incident"]["id"] == "incident-overdue-storage")
+    assert escalated_item["incident"]["status"] == "escalated"
+    assert escalated_item["recommended_action"] is None

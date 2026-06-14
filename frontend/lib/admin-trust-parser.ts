@@ -48,9 +48,9 @@ function parseItem(payload: unknown): ApiAdminTrustItem | null {
   }
   const incident = parseIncident(payload["incident"])
   const risk = parseRisk(payload["risk"])
-  const latestAuditLog = parseNullableAuditLog(payload["latest_audit_log"] ?? payload["latestAuditLog"])
-  const recommendedAction = readString(payload, "recommended_action") ?? readString(payload, "recommendedAction")
-  if (incident === null || risk === null || latestAuditLog === undefined || !isAdminAction(recommendedAction)) {
+  const latestAuditLog = parseNullableAuditLog(readKey(payload, "latest_audit_log", "latestAuditLog"))
+  const recommendedAction = parseNullableAdminAction(readKey(payload, "recommended_action", "recommendedAction"))
+  if (incident === null || risk === null || latestAuditLog === undefined || recommendedAction === undefined) {
     return null
   }
   return { incident, risk, latestAuditLog, recommendedAction }
@@ -95,6 +95,13 @@ function parseNullableAuditLog(payload: unknown): ApiAdminAuditLog | null | unde
   return parseAuditLog(payload) ?? undefined
 }
 
+function parseNullableAdminAction(payload: unknown): ApiAdminTrustAction | null | undefined {
+  if (payload === null) {
+    return null
+  }
+  return typeof payload === "string" && isAdminAction(payload) ? payload : undefined
+}
+
 function parseAuditLog(payload: unknown): ApiAdminAuditLog | null {
   if (!isRecord(payload)) {
     return null
@@ -135,6 +142,10 @@ function readNumber(record: Record<string, unknown>, key: string): number | null
 function readBoolean(record: Record<string, unknown>, key: string): boolean | null {
   const value = record[key]
   return typeof value === "boolean" ? value : null
+}
+
+function readKey(record: Record<string, unknown>, snakeKey: string, camelKey: string): unknown {
+  return snakeKey in record ? record[snakeKey] : record[camelKey]
 }
 
 function isIncidentStatus(value: string | null): value is ApiIncidentStatus {

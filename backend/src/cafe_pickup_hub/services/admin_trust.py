@@ -27,7 +27,7 @@ class AdminTrustItem:
     incident: IncidentReport
     risk: RiskRecord
     latest_audit_log: AdminAuditLog | None
-    recommended_action: AdminTrustAction
+    recommended_action: AdminTrustAction | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -131,14 +131,14 @@ def risk_level_for_action(action: AdminTrustAction) -> RiskLevel:
             assert_never(unreachable)
 
 
-def recommended_action_for_status(status: IncidentStatus) -> AdminTrustAction:
+def recommended_action_for_status(status: IncidentStatus) -> AdminTrustAction | None:
     match status:
         case IncidentStatus.OPEN:
             return AdminTrustAction.START_REVIEW
         case IncidentStatus.UNDER_REVIEW:
             return AdminTrustAction.RESOLVE
         case IncidentStatus.RESOLVED | IncidentStatus.ESCALATED:
-            return AdminTrustAction.RESOLVE
+            return None
         case unreachable:
             assert_never(unreachable)
 
