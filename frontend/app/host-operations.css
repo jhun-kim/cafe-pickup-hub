@@ -1,0 +1,125 @@
+.source-banner,
+.host-ops-warning,
+.host-op-card,
+.host-op-card dl,
+.host-op-card dl div {
+  border: 1px solid rgba(91, 57, 44, 0.12);
+  border-radius: 14px;
+}
+
+.source-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.76);
+  padding: 12px 14px;
+}
+
+.source-banner strong {
+  color: var(--coffee);
+}
+
+.source-banner span {
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.dashboard-grid--host {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.host-ops-panel {
+  margin-top: 16px;
+}
+
+.host-ops-warning {
+  margin-bottom: 12px;
+  background: rgba(232, 111, 81, 0.1);
+  color: #833722;
+  padding: 12px 14px;
+  font-weight: 850;
+}
+
+.host-ops-list {
+  display: grid;
+  gap: 12px;
+}
+
+.host-op-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr) auto;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  padding: 14px;
+}
+
+.host-op-card h3,
+.host-op-card p,
+.host-op-card dl {
+  margin: 0;
+}
+
+.host-op-card h3 {
+  margin-bottom: 6px;
+  color: var(--coffee);
+}
+
+.host-op-card p {
+  color: var(--muted);
+}
+
+.host-op-card dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  background: rgba(247, 238, 222, 0.58);
+  padding: 8px;
+}
+
+.host-op-card dl div {
+  background: rgba(255, 255, 255, 0.74);
+  padding: 8px;
+}
+
+.host-op-card dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.host-op-card dd {
+  margin: 2px 0 0;
+  color: var(--coffee);
+  font-weight: 900;
+}
+
+.host-ops-success,
+.host-ops-error {
+  grid-column: 1 / -1;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 850;
+}
+
+.host-ops-success {
+  background: rgba(79, 125, 93, 0.12);
+  color: #2f6544;
+}
+
+.host-ops-error {
+  background: rgba(232, 111, 81, 0.12);
+  color: #833722;
+}
+
+@media (max-width: 860px) {
+  .host-op-card {
+    grid-template-columns: 1fr;
+  }
+
+  .host-op-card dl {
+    grid-template-columns: 1fr;
+  }
+}

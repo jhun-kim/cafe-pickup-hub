@@ -1,102 +1,92 @@
+import { HostOperationBoard } from "@/components/host/HostOperationBoard"
 import { DashboardShell } from "@/components/uiux/DashboardShell"
 import { IconMotif } from "@/components/uiux/IconMotif"
 import { StatusPill } from "@/components/uiux/StatusPill"
-import { hostMetrics } from "@/lib/uiux-data"
+import { loadHostOperations } from "@/lib/api-client"
 
-const shelfSlots = ["101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "201", "202", "203", "204", "205"]
-const pickupRows = [
-  ["13:30", "101번", "김민지", "예정"],
-  ["14:00", "204번", "최현우", "예정"],
-  ["16:30", "C3번", "박지훈", "확인 필요"],
-  ["18:00", "107번", "정유진", "예정"],
-] as const
-const todayActions = [
-  { title: "입고 등록", detail: "배송기사 도착 6건", action: "입고 시작", iconIndex: 1 },
-  { title: "보관함 배정", detail: "크기 확인 대기 4건", action: "슬롯 배정", iconIndex: 2 },
-  { title: "픽업 완료", detail: "고객 도착 3건", action: "코드 확인", iconIndex: 3 },
-] as const
+export default async function HostPage() {
+  const hostData = await loadHostOperations()
+  const sourceKind = hostData.source.kind
+  const operations = hostData.data.operations
+  const receiveCount = operations.filter((item) => item.operation.action === "receive_package").length
+  const storageCount = operations.filter((item) => item.operation.action === "assign_storage").length
+  const handoffCount = operations.filter((item) => item.operation.action === "complete_handoff").length
 
-export default function HostPage() {
   return (
-    <DashboardShell title="안녕하세요, 모카우드 카페님" subtitle="오늘의 픽업허브 운영 현황을 확인하세요." active="host">
+    <DashboardShell title="안녕하세요, 호스트님" subtitle="오늘의 입고, 보관, 픽업 완료 작업을 API 상태 기준으로 처리하세요." active="host">
+      <section className="source-banner" data-api-source={sourceKind}>
+        <strong>{sourceKind === "api" ? "API 상태: live v1" : "API 상태: demo fallback"}</strong>
+        <span>{hostData.source.apiBaseUrl}</span>
+        {sourceKind === "demo" ? <span>실제 호스트 작업 성공으로 표시하지 않습니다.</span> : null}
+      </section>
+
       <section className="priority-strip" aria-label="오늘 우선 작업">
-        {todayActions.map((item) => (
-          <article key={item.title} className="priority-card">
-            <IconMotif index={item.iconIndex} label="" size="md" />
+        <article className="priority-card">
+          <IconMotif index={1} label="" size="md" />
+          <div>
+            <span>오늘 우선 작업</span>
+            <strong>입고 등록</strong>
+            <p>{receiveCount}건 대기</p>
+          </div>
+          <a href="#host-operations">입고 시작</a>
+        </article>
+        <article className="priority-card">
+          <IconMotif index={2} label="" size="md" />
+          <div>
+            <span>오늘 우선 작업</span>
+            <strong>보관함 배정</strong>
+            <p>{storageCount}건 대기</p>
+          </div>
+          <a href="#host-operations">슬롯 배정</a>
+        </article>
+        <article className="priority-card">
+          <IconMotif index={3} label="" size="md" />
+          <div>
+            <span>오늘 우선 작업</span>
+            <strong>픽업 완료</strong>
+            <p>{handoffCount}건 대기</p>
+          </div>
+          <a href="#host-operations">코드 확인</a>
+        </article>
+      </section>
+
+      <section className="metric-grid metric-grid--four">
+        <article className="metric-card" data-noninteractive="host-operation-metric">
+          <IconMotif index={1} label="" size="md" />
+          <span>작업 대기</span>
+          <strong>{operations.length}</strong>
+          <p>live/demo source 기준</p>
+        </article>
+        <article className="metric-card" data-noninteractive="host-operation-metric">
+          <IconMotif index={2} label="" size="md" />
+          <span>입고 필요</span>
+          <strong>{receiveCount}</strong>
+          <p>배송기사 도착 확인</p>
+        </article>
+        <article className="metric-card" data-noninteractive="host-operation-metric">
+          <IconMotif index={3} label="" size="md" />
+          <span>보관 배정</span>
+          <strong>{storageCount}</strong>
+          <p>보관함 번호 확인</p>
+        </article>
+        <article className="metric-card" data-noninteractive="host-operation-metric">
+          <IconMotif index={4} label="" size="md" />
+          <span>핸드오프</span>
+          <strong>{handoffCount}</strong>
+          <p>코드 검증 후 완료</p>
+        </article>
+      </section>
+
+      <section id="host-operations" className="dashboard-grid dashboard-grid--host">
+        <article className="panel panel--wide">
+          <div className="panel-header">
             <div>
-              <span>오늘 우선 작업</span>
-              <strong>{item.title}</strong>
-              <p>{item.detail}</p>
+              <h2>호스트 운영 작업</h2>
+              <p>입고 등록 → 보관함 배정 → 픽업 완료 순서로만 처리됩니다.</p>
             </div>
-            <button type="button">{item.action}</button>
-          </article>
-        ))}
-      </section>
-
-      <section className="metric-grid metric-grid--five">
-        {hostMetrics.map((metric) => (
-          <article key={metric.label} className="metric-card" data-noninteractive="metric-summary">
-            <IconMotif index={metric.iconIndex} label="" size="md" />
-            <span>{metric.label}</span>
-            <strong>{metric.value}</strong>
-            <p>{metric.detail}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="dashboard-grid">
-        <article className="panel panel--wide">
-          <div className="panel-header">
-            <h2>보관함 사용 현황</h2>
-            <button className="ghost-button" type="button">보관함 설정</button>
+            <StatusPill tone={sourceKind === "api" ? "green" : "coral"}>{sourceKind === "api" ? "Live" : "Demo"}</StatusPill>
           </div>
-          <div className="slot-grid">
-            {shelfSlots.map((slot, index) => (
-              <div
-                key={slot}
-                className={index % 5 === 2 ? "slot-cell is-reserved" : index % 4 === 0 ? "slot-cell is-empty" : "slot-cell is-used"}
-                data-noninteractive="storage-slot-status"
-              >
-                <span>{slot}</span>
-                <IconMotif index={index % 5 === 2 ? 3 : 2} label="" size="sm" />
-              </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="panel">
-          <div className="panel-header">
-            <h2>픽업 인증 대기</h2>
-            <StatusPill tone="coral">3건</StatusPill>
-          </div>
-          <div className="verify-list">
-            {["A102", "B207", "C3"].map((code, index) => (
-              <div key={code} className="verify-row">
-                <strong>{code}</strong>
-                <span>{index === 1 ? "확인 필요" : "고객 도착"}</span>
-                <button type="button">픽업 인증</button>
-              </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="panel panel--wide">
-          <div className="panel-header">
-            <h2>예정된 픽업 일정</h2>
-            <button className="ghost-button" type="button">전체 일정 보기</button>
-          </div>
-          <table>
-            <thead>
-              <tr><th>시간</th><th>보관함</th><th>고객명</th><th>상태</th></tr>
-            </thead>
-            <tbody>
-              {pickupRows.map((row) => (
-                <tr key={`${row[0]}-${row[1]}`}>
-                  <td>{row[0]}</td><td>{row[1]}</td><td>{row[2]}</td><td>{row[3]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <HostOperationBoard apiSourceKind={sourceKind} initialOperations={operations} />
         </article>
       </section>
     </DashboardShell>

@@ -43,6 +43,12 @@ class StorageSlotStatus(StrEnum):
     OUT_OF_SERVICE = "out_of_service"
 
 
+class HostOperationAction(StrEnum):
+    RECEIVE_PACKAGE = "receive_package"
+    ASSIGN_STORAGE = "assign_storage"
+    COMPLETE_HANDOFF = "complete_handoff"
+
+
 class DomainModel(BaseModel):
     model_config = ConfigDict(frozen=True)
 
