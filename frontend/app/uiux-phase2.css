@@ -12,6 +12,30 @@
   margin-bottom: 12px;
 }
 
+.api-source-banner {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(79, 125, 93, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.74);
+  color: var(--coffee);
+  padding: 10px;
+  font-size: 0.78rem;
+}
+
+.api-source-banner span {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.api-source-banner--flow {
+  max-width: 560px;
+  margin-top: 16px;
+  background: rgba(255, 250, 240, 0.88);
+}
+
 .nearby-map {
   position: relative;
   min-height: 118px;

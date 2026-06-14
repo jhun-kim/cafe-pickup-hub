@@ -3,9 +3,11 @@ import Link from "next/link"
 import { IconMotif } from "@/components/uiux/IconMotif"
 import { MobileShell } from "@/components/uiux/MobileShell"
 import { StatusPill } from "@/components/uiux/StatusPill"
-import { cafeSpots } from "@/lib/uiux-data"
+import { getHomePickupData } from "@/lib/api-view-models"
 
-export default function Home() {
+export default async function Home() {
+  const { mapSummary, sourceView, spots } = await getHomePickupData()
+
   return (
     <MobileShell active="home">
       <header className="mobile-header">
@@ -31,6 +33,10 @@ export default function Home() {
 
       <section className="hero-card hero-card--home">
         <div>
+          <div className="api-source-banner" data-api-source={sourceView.source.kind}>
+            <strong>{sourceView.label}</strong>
+            <span>{sourceView.detail}</span>
+          </div>
           <div className="trust-chip-row" aria-label="안전 상태">
             <StatusPill tone="green">직원 확인</StatusPill>
             <StatusPill tone="neutral">1회 코드</StatusPill>
@@ -58,11 +64,11 @@ export default function Home() {
           <span className="nearby-map__pin nearby-map__pin--three" data-noninteractive="map-pin" />
           <div className="nearby-map__label" data-noninteractive="map-summary">
             <strong>역삼역 반경 600 m</strong>
-            <span>안전 배지 허브 3곳</span>
+            <span>{mapSummary}</span>
           </div>
         </div>
         <div className="cafe-list">
-          {cafeSpots.map((spot) => (
+          {spots.map((spot) => (
             <article key={spot.name} className="cafe-row">
               <div className="thumb-box">
                 <IconMotif index={0} label="카페 위치" size="md" />

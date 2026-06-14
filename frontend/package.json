@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "smoke:routes": "node scripts/route-smoke.mjs"
+    "smoke:routes": "node scripts/route-smoke.mjs",
+    "smoke:api-contract": "node scripts/api-contract-smoke.mjs"
   },
   "dependencies": {
     "next": "^15.3.4",
