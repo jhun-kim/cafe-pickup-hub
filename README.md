@@ -45,6 +45,8 @@ uv run pytest -q
 - `POST /api/v1/pickup-authorizations/{authorization_id}/consume` 1회용 코드 사용
 - `GET /api/v1/host/operations` host receive/store/handoff 작업 목록
 - `POST /api/v1/host/operations/{pickup_request_id}/actions` 입고 등록, 보관함 배정, 픽업 완료 action
+- `GET /api/v1/admin/trust` incident, risk hold, audit log 기반 관리자 판단 큐
+- `POST /api/v1/admin/trust/incidents/{incident_id}/actions` 검토 시작, 해결, 상위 검토 action
 - `GET /health` 서비스 상태
 - `GET /api/hubs` 픽업 허브 목록
 - `GET /api/hubs/{hub_id}` 픽업 허브 상세
@@ -81,7 +83,17 @@ API_CONTRACT_EXPECT_SOURCE=api ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm ru
 ```
 
 Backend가 꺼져 있거나 `/api/v1` contract parsing에 실패하면 frontend는 demo fallback을 사용하되, 화면에 `API 상태: demo fallback`과 이유를 표시합니다.
-Demo fallback 상태에서는 실제 예약, host operation, friend authorization 성공을 표시하지 않고 action button을 차단합니다.
+Demo fallback 상태에서는 실제 예약, host operation, friend authorization, admin trust action 성공을 표시하지 않고 action button을 차단합니다.
+
+최종 readiness smoke:
+
+```bash
+cd frontend
+npm run smoke:api-contract
+ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 API_CONTRACT_EXPECT_SOURCE=api npm run smoke:api-contract
+ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3003 API_CONTRACT_EXPECT_SOURCE=demo npm run smoke:api-contract
+ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm run smoke:routes
+```
 
 ## MVP 수익/운영 가정
 

@@ -66,7 +66,7 @@ export function BookingForm({ apiSourceKind, hubId, hubName, priceLabel }: Booki
   }
 
   return (
-    <section className="booking-panel" data-booking-mode={apiSourceKind}>
+    <section id="pickup-booking" className="booking-panel" data-booking-mode={apiSourceKind}>
       <div className="panel-header">
         <div>
           <p className="eyebrow">Create pickup request</p>
