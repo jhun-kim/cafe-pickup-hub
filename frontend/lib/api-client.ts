@@ -1,18 +1,10 @@
-import type { ApiHub, ApiPickupRequest, ApiResult } from "@/lib/api-contract"
+import type { ApiHub, ApiPickupRequest, ApiResult, CreatePickupRequestInput } from "@/lib/api-contract"
 import { demoContracts } from "@/lib/api-demo"
-import { parseHubList, parsePickupRequestList } from "@/lib/api-parsers"
+import { ApiContractError } from "@/lib/api-errors"
+import { parseHubList, parsePickupRequestList, parsePickupRequestResponse } from "@/lib/api-parsers"
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000"
 const API_TIMEOUT_MS = 900
-
-export class ApiContractError extends Error {
-  constructor(
-    readonly path: string,
-    readonly reason: string,
-  ) {
-    super(`API contract request failed for ${path}: ${reason}`)
-  }
-}
 
 export type PickupContracts = {
   readonly hubs: readonly ApiHub[]
@@ -46,19 +38,36 @@ export async function loadPickupContracts(): Promise<ApiResult<PickupContracts>>
   }
 }
 
+export async function createPickupRequest(payload: CreatePickupRequestInput): Promise<ApiPickupRequest> {
+  const apiBaseUrl = getApiBaseUrl()
+  const responsePayload = await fetchJson(apiBaseUrl, "/api/v1/pickup-requests", {
+    method: "POST",
+    body: JSON.stringify({
+      hub_id: payload.hubId,
+      user_id: payload.userId,
+      package_size: payload.packageSize,
+      pickup_window: payload.pickupWindow,
+      delivery_note: payload.deliveryNote,
+    }),
+  })
+  return parsePickupRequestResponse(responsePayload)
+}
+
 function getApiBaseUrl(): string {
   return process.env["NEXT_PUBLIC_API_BASE_URL"] ?? DEFAULT_API_BASE_URL
 }
 
-async function fetchJson(apiBaseUrl: string, path: string): Promise<unknown> {
+type FetchJsonOptions = {
+  readonly method?: "GET" | "POST"
+  readonly body?: string
+}
+
+async function fetchJson(apiBaseUrl: string, path: string, options: FetchJsonOptions = {}): Promise<unknown> {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS)
 
   try {
-    const response = await fetch(`${apiBaseUrl}${path}`, {
-      cache: "no-store",
-      signal: controller.signal,
-    })
+    const response = await fetch(`${apiBaseUrl}${path}`, makeRequestInit(options, controller.signal))
 
     if (!response.ok) {
       throw new ApiContractError(path, `HTTP ${response.status}`)
@@ -75,5 +84,23 @@ async function fetchJson(apiBaseUrl: string, path: string): Promise<unknown> {
     throw new ApiContractError(path, "unknown fetch failure")
   } finally {
     clearTimeout(timeoutId)
+  }
+}
+
+function makeRequestInit(options: FetchJsonOptions, signal: AbortSignal): RequestInit {
+  if (options.body) {
+    return {
+      body: options.body,
+      cache: "no-store",
+      headers: { "content-type": "application/json" },
+      method: options.method ?? "POST",
+      signal,
+    }
+  }
+
+  return {
+    cache: "no-store",
+    method: options.method ?? "GET",
+    signal,
   }
 }

@@ -1,0 +1,60 @@
+.booking-panel {
+  display: grid;
+  gap: 16px;
+  width: min(100%, 720px);
+  border: 1px solid rgba(91, 57, 44, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.9);
+  padding: 20px;
+  box-shadow: 0 18px 48px rgba(91, 57, 44, 0.1);
+}
+
+.booking-form {
+  display: grid;
+  gap: 12px;
+}
+
+.booking-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--coffee);
+  font-weight: 850;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  border: 1px solid rgba(91, 57, 44, 0.16);
+  border-radius: 14px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  padding: 12px;
+}
+
+.booking-form textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+
+.booking-warning,
+.booking-error,
+.booking-confirmation {
+  border-radius: 16px;
+  padding: 12px;
+  font-weight: 850;
+}
+
+.booking-warning,
+.booking-error {
+  background: rgba(232, 111, 81, 0.13);
+  color: #b44731;
+}
+
+.booking-confirmation {
+  display: grid;
+  gap: 4px;
+  background: rgba(79, 125, 93, 0.16);
+  color: #2e6b45;
+}

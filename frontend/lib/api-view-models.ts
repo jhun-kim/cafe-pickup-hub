@@ -15,9 +15,16 @@ export type HomePickupData = {
   readonly mapSummary: string
 }
 
+export type BookingHubView = {
+  readonly id: string
+  readonly name: string
+  readonly priceLabel: string
+}
+
 export type PickupFlowData = {
   readonly steps: readonly FlowStep[]
   readonly sourceView: ApiSourceView
+  readonly selectedHub: BookingHubView
 }
 
 export async function getHomePickupData(): Promise<HomePickupData> {
@@ -32,26 +39,37 @@ export async function getHomePickupData(): Promise<HomePickupData> {
   }
 }
 
-export async function getPickupFlowData(): Promise<PickupFlowData> {
+export async function getPickupFlowData(selectedHubId: string | undefined): Promise<PickupFlowData> {
   const contracts = await loadPickupContracts()
-  const primaryHub = contracts.data.hubs[0]
+  const primaryHub = contracts.data.hubs.find((hub) => hub.id === selectedHubId) ?? contracts.data.hubs[0]
   const pickupRequest = contracts.data.pickupRequests.find((request) => request.status === "ready_for_pickup") ?? contracts.data.pickupRequests[0]
 
   if (!primaryHub || !pickupRequest) {
     return {
       steps: flowSteps,
       sourceView: toSourceView(contracts.source),
+      selectedHub: {
+        id: "demo-hub-1",
+        name: cafeSpots[0]?.name ?? "데모 허브",
+        priceLabel: cafeSpots[0]?.fee ?? "₩1,800",
+      },
     }
   }
 
   return {
     steps: toFlowSteps(primaryHub, pickupRequest),
     sourceView: toSourceView(contracts.source),
+    selectedHub: {
+      id: primaryHub.id,
+      name: primaryHub.cafeName,
+      priceLabel: formatKrw(primaryHub.pricePerDayKrw),
+    },
   }
 }
 
 function toCafePickupSpot(hub: ApiHub): CafePickupSpot {
   return {
+    id: hub.id,
     name: hub.cafeName,
     station: `${hub.neighborhood} · 도보 ${hub.walkMinutesFromStation}분`,
     distance: `${hub.walkMinutesFromStation * 80} m`,

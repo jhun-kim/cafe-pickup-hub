@@ -81,3 +81,11 @@ export type ApiPickupRequest = {
   readonly pickupCode: string
   readonly pickupWindow: string
 }
+
+export type CreatePickupRequestInput = {
+  readonly hubId: string
+  readonly userId: string
+  readonly packageSize: string
+  readonly pickupWindow: string
+  readonly deliveryNote: string
+}

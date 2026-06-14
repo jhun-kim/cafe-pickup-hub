@@ -25,6 +25,7 @@ Versioned endpoints:
 - `GET /api/v1/health`
 - `GET /api/v1/hubs`
 - `GET /api/v1/pickup-requests`
+- `POST /api/v1/pickup-requests`
 
 Backward-compatible legacy endpoints:
 
@@ -36,6 +37,7 @@ Backward-compatible legacy endpoints:
 ## Frontend contract smoke
 
 Frontend Phase 4는 `/api/v1/hubs`와 `/api/v1/pickup-requests`를 읽습니다.
+Phase 5부터는 same-origin frontend proxy가 pickup request 생성을 backend로 전달합니다.
 
 ```bash
 uv run fastapi dev src/cafe_pickup_hub/main.py --host 127.0.0.1 --port 8001
@@ -43,4 +45,12 @@ uv run fastapi dev src/cafe_pickup_hub/main.py --host 127.0.0.1 --port 8001
 cd ../frontend
 NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8001 npm run dev -- --hostname 127.0.0.1 --port 3002
 API_CONTRACT_EXPECT_SOURCE=api ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm run smoke:api-contract
+```
+
+Backend 직접 create smoke:
+
+```bash
+curl -i -X POST http://127.0.0.1:8001/api/v1/pickup-requests \
+  -H 'content-type: application/json' \
+  -d '{"hub_id":"hub-maple-counter","user_id":"user-jieun","package_size":"small parcel","pickup_window":"2026-06-14 18:00-20:30","delivery_note":"Leave with cafe staff only"}'
 ```

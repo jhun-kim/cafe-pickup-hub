@@ -1,4 +1,5 @@
 export type CafePickupSpot = {
+  readonly id: string
   readonly name: string
   readonly station: string
   readonly distance: string
@@ -36,6 +37,7 @@ export type Metric = {
 
 export const cafeSpots = [
   {
+    id: "hub-maple-counter",
     name: "브라운핸즈 역삼점",
     station: "역삼역 도보 3분",
     distance: "120 m",
@@ -46,6 +48,7 @@ export const cafeSpots = [
     trust: "직원 확인",
   },
   {
+    id: "hub-river-locker",
     name: "모닝브루 선릉점",
     station: "선릉역 도보 5분",
     distance: "320 m",
@@ -56,6 +59,7 @@ export const cafeSpots = [
     trust: "CCTV 구역",
   },
   {
+    id: "hub-garden-window",
     name: "커먼그라운드 논현",
     station: "논현역 도보 7분",
     distance: "540 m",

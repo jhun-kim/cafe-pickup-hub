@@ -8,6 +8,7 @@
 @import "./uiux-dashboard.css";
 @import "./uiux-admin.css";
 @import "./uiux-phase2.css";
+@import "./uiux-booking.css";
 
 :root {
   --ink: #17201c;
