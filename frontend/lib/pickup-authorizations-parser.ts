@@ -21,7 +21,7 @@ export function parsePickupAuthorizationCreateResponse(payload: unknown): ApiPic
   if (!isRecord(payload) || authorization === null) {
     throw new ApiContractError("/api/v1/pickup-authorizations", "response is not an authorization")
   }
-  const oneTimeCode = readString(payload, "one_time_code")
+  const oneTimeCode = readString(payload, "one_time_code") ?? readString(payload, "oneTimeCode")
   if (oneTimeCode === null) {
     throw new ApiContractError("/api/v1/pickup-authorizations", "response is missing one-time code")
   }
@@ -33,11 +33,11 @@ function parsePickupAuthorizationPayload(payload: unknown): ApiPickupAuthorizati
     return null
   }
   const id = readString(payload, "id")
-  const pickupRequestId = readString(payload, "pickup_request_id")
-  const authorizedPickerName = readString(payload, "authorized_picker_name")
+  const pickupRequestId = readString(payload, "pickup_request_id") ?? readString(payload, "pickupRequestId")
+  const authorizedPickerName = readString(payload, "authorized_picker_name") ?? readString(payload, "authorizedPickerName")
   const status = readString(payload, "status")
-  const codeHint = readString(payload, "code_hint")
-  const expiresAt = readString(payload, "expires_at")
+  const codeHint = readString(payload, "code_hint") ?? readString(payload, "codeHint")
+  const expiresAt = readString(payload, "expires_at") ?? readString(payload, "expiresAt")
 
   if (
     id === null ||

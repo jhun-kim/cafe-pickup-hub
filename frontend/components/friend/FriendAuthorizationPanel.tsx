@@ -27,9 +27,14 @@ export function FriendAuthorizationPanel({
   initialAuthorizations,
 }: FriendAuthorizationPanelProps) {
   const [authorizations, setAuthorizations] = useState<readonly ApiPickupAuthorization[]>(initialAuthorizations)
+  const [selectedAuthorizationId, setSelectedAuthorizationId] = useState<string | null>(null)
   const [actionState, setActionState] = useState<ActionState>({ kind: "idle" })
   const isApiBacked = apiSourceKind === "api" && pickupRequest !== null
-  const activeAuthorization = authorizations.find((item) => item.status === "active") ?? authorizations[0] ?? null
+  const selectedAuthorization =
+    authorizations.find((item) => item.id === selectedAuthorizationId) ??
+    authorizations.find((item) => item.status === "active") ??
+    authorizations[0] ??
+    null
 
   async function handleCreate(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault()
@@ -48,6 +53,7 @@ export function FriendAuthorizationPanel({
     }
     const created = parsePickupAuthorizationCreateResponse(response)
     setAuthorizations((current) => [created, ...current])
+    setSelectedAuthorizationId(created.id)
     setActionState({ kind: "created", authorizationId: created.id, oneTimeCode: created.oneTimeCode })
   }
 
@@ -65,13 +71,13 @@ export function FriendAuthorizationPanel({
 
   async function handleConsume(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault()
-    if (!isApiBacked || activeAuthorization === null) {
+    if (!isApiBacked || selectedAuthorization === null) {
       setActionState({ kind: "error", message: "사용 가능한 live 권한이 없습니다." })
       return
     }
     const formData = new FormData(event.currentTarget)
     const response = await postJson(
-      `/api/pickup-authorizations/${activeAuthorization.id}/consume`,
+      `/api/pickup-authorizations/${selectedAuthorization.id}/consume`,
       { one_time_code: readFormValue(formData, "one_time_code") },
       "코드 확인 중",
     )
@@ -106,13 +112,14 @@ export function FriendAuthorizationPanel({
 
   function updateAuthorization(updated: ApiPickupAuthorization): void {
     setAuthorizations((current) => current.map((item) => (item.id === updated.id ? updated : item)))
+    setSelectedAuthorizationId(updated.id)
     setActionState({ kind: "updated", authorizationId: updated.id, status: updated.status })
   }
 
   return (
     <section className="permission-card" data-auth-mode={apiSourceKind}>
       {!isApiBacked ? (
-        <div className="permission-warning" data-noninteractive="demo-auth-blocked">
+        <div className="permission-warning" data-noninteractive="demo-blocked">
           Demo fallback 데이터입니다. 실제 친구 권한 생성, 취소, 사용 성공으로 처리하지 않습니다.
         </div>
       ) : null}
@@ -132,24 +139,24 @@ export function FriendAuthorizationPanel({
       </form>
 
       <div className="code-panel" data-noninteractive="verification-preview">
-        <strong>{activeAuthorization?.codeHint ?? "권한 없음"}</strong>
+        <strong>{selectedAuthorization?.codeHint ?? "권한 없음"}</strong>
         <span>QR + PIN + 1회 코드 · 사용 즉시 만료</span>
-        <span>{activeAuthorization ? statusLabel(activeAuthorization.status) : "생성 대기"}</span>
+        <span>{selectedAuthorization ? statusLabel(selectedAuthorization.status) : "생성 대기"}</span>
       </div>
 
       <form className="permission-form permission-form--inline" onSubmit={handleConsume}>
         <input name="one_time_code" placeholder="1회 코드 입력" disabled={!isApiBacked || actionState.kind === "loading"} />
-        <button className="ghost-button" type="submit" disabled={!isApiBacked || actionState.kind === "loading" || activeAuthorization === null}>
+        <button className="ghost-button" type="submit" disabled={!isApiBacked || actionState.kind === "loading" || selectedAuthorization === null}>
           코드 사용
         </button>
       </form>
       <button
         className="ghost-button ghost-button--danger"
         type="button"
-        disabled={!isApiBacked || actionState.kind === "loading" || activeAuthorization === null}
+        disabled={!isApiBacked || actionState.kind === "loading" || selectedAuthorization === null}
         onClick={() => {
-          if (activeAuthorization) {
-            void handleRevoke(activeAuthorization)
+          if (selectedAuthorization) {
+            void handleRevoke(selectedAuthorization)
           }
         }}
       >

@@ -47,7 +47,7 @@ export function demoFriendAuthorizations(apiBaseUrl: string, reason: string): Ap
   }
   return {
     data: {
-      pickupRequest,
+      pickupRequest: { ...pickupRequest, authorizations: [] },
       authorizations: [],
     },
     source: { kind: "demo", apiBaseUrl, reason },
