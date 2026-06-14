@@ -21,6 +21,10 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
   const isApiBacked = apiSourceKind === "api"
 
   async function submitAction(item: ApiAdminTrustItem): Promise<void> {
+    if (item.recommendedAction === null) {
+      setActionState({ kind: "error", incidentId: item.incident.id, message: "종결된 incident에는 실행 가능한 다음 조치가 없습니다." })
+      return
+    }
     if (!isApiBacked) {
       setActionState({
         kind: "error",
@@ -97,16 +101,22 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
                 <dd>{item.latestAuditLog?.action ?? "대기"}</dd>
               </div>
             </dl>
-            <button
-              className="primary-button"
-              type="button"
-              disabled={!isApiBacked || isLoading(actionState, item.incident.id) || item.incident.status === "resolved"}
-              onClick={() => {
-                void submitAction(item)
-              }}
-            >
-              {isLoading(actionState, item.incident.id) ? "처리 중" : actionLabel(item.recommendedAction)}
-            </button>
+            {item.recommendedAction === null ? (
+              <span className="admin-trust-terminal" data-noninteractive="terminal-admin-trust-item">
+                다음 조치 없음
+              </span>
+            ) : (
+              <button
+                className="primary-button"
+                type="button"
+                disabled={!isApiBacked || isLoading(actionState, item.incident.id)}
+                onClick={() => {
+                  void submitAction(item)
+                }}
+              >
+                {isLoading(actionState, item.incident.id) ? "처리 중" : actionLabel(item.recommendedAction)}
+              </button>
+            )}
             {actionState.kind === "success" && actionState.incidentId === item.incident.id ? (
               <p className="admin-trust-success" data-admin-action-result="success">
                 {actionLabel(actionState.action)} 완료

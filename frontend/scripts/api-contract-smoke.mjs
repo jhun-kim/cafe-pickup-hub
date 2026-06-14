@@ -246,6 +246,30 @@ if (baseUrl) {
     }
 
     console.log("/api/admin-trust action ok")
+
+    const adminEscalateResponse = await fetch(`${baseUrl}/api/admin-trust/incidents/incident-overdue-storage/actions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "escalate",
+        admin_user_id: "admin-ops-1",
+        note: "Smoke admin trust escalation via frontend proxy",
+      }),
+    })
+
+    if (adminEscalateResponse.status !== 200) {
+      throw new Error(`admin trust escalation returned ${adminEscalateResponse.status}`)
+    }
+
+    const escalated = await adminEscalateResponse.text()
+    const escalationMarkers = ["incident-overdue-storage", "\"status\":\"escalated\"", "\"recommendedAction\":null"]
+    const missingEscalationMarkers = escalationMarkers.filter((marker) => !escalated.includes(marker))
+
+    if (missingEscalationMarkers.length > 0) {
+      throw new Error(`admin trust escalation missing markers: ${missingEscalationMarkers.join(", ")}`)
+    }
+
+    console.log("/api/admin-trust escalation terminal ok")
   }
 }
 

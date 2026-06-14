@@ -41,7 +41,7 @@ export type ApiAdminTrustItem = {
   readonly incident: ApiIncidentReport
   readonly risk: ApiRiskRecord
   readonly latestAuditLog: ApiAdminAuditLog | null
-  readonly recommendedAction: ApiAdminTrustAction
+  readonly recommendedAction: ApiAdminTrustAction | null
 }
 
 export type AdminTrustContracts = {

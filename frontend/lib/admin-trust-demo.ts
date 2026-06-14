@@ -40,7 +40,7 @@ function demoAdminTrustContracts(): AdminTrustContracts {
           entityId: "demo-incident-code",
           note: "Demo fallback only; operator actions are disabled.",
         },
-        recommendedAction: "start_review",
+        recommendedAction: null,
       },
       {
         incident: {
