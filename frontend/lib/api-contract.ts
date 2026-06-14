@@ -113,3 +113,18 @@ export type HostOperationActionInput = {
   readonly pickupCode?: string
   readonly note: string
 }
+
+export type CreatePickupAuthorizationInput = {
+  readonly pickupRequestId: string
+  readonly authorizedPickerName: string
+  readonly expiresAt: string
+}
+
+export type ConsumePickupAuthorizationInput = {
+  readonly authorizationId: string
+  readonly oneTimeCode: string
+}
+
+export type ApiPickupAuthorizationCreateResponse = ApiPickupAuthorization & {
+  readonly oneTimeCode: string
+}

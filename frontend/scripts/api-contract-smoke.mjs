@@ -10,6 +10,10 @@ const requiredFiles = [
   "app/api/pickup-requests/route.ts",
   "components/host/HostOperationBoard.tsx",
   "app/api/host-operations/[pickupRequestId]/actions/route.ts",
+  "components/friend/FriendAuthorizationPanel.tsx",
+  "app/api/pickup-authorizations/route.ts",
+  "app/api/pickup-authorizations/[authorizationId]/revoke/route.ts",
+  "app/api/pickup-authorizations/[authorizationId]/consume/route.ts",
 ]
 
 for (const file of requiredFiles) {
@@ -31,6 +35,10 @@ const sourceChecks = [
     file: "app/host/page.tsx",
     markers: ["loadHostOperations", "data-api-source", "HostOperationBoard"],
   },
+  {
+    file: "app/friend-permission/page.tsx",
+    markers: ["loadFriendAuthorizationsFromSameOrigin", "data-api-source", "FriendAuthorizationPanel"],
+  },
 ]
 
 for (const check of sourceChecks) {
@@ -44,6 +52,7 @@ for (const check of sourceChecks) {
 
 const baseUrl = process.env.ROUTE_SMOKE_BASE_URL
 const expectedSource = process.env.API_CONTRACT_EXPECT_SOURCE ?? "api"
+const futureExpiry = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
 
 if (baseUrl) {
   const homeSourceMarker = expectedSource === "demo" ? "API 상태: demo fallback" : "Maple Counter Cafe"
@@ -60,6 +69,10 @@ if (baseUrl) {
     {
       path: "/host",
       markers: ["data-api-source=", "data-host-ops-mode=", "호스트 운영 작업"],
+    },
+    {
+      path: "/friend-permission",
+      markers: ["data-api-source=", "data-auth-mode=", "친구에게 픽업 권한 공유"],
     },
   ]
 
@@ -131,6 +144,73 @@ if (baseUrl) {
     }
 
     console.log("/api/host-operations action ok")
+
+    const friendCreateResponse = await fetch(`${baseUrl}/api/pickup-authorizations`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        pickup_request_id: "pickup-ready-001",
+        authorized_picker_name: "Smoke Friend",
+        expires_at: futureExpiry,
+      }),
+    })
+
+    if (friendCreateResponse.status !== 201) {
+      throw new Error(`friend authorization create returned ${friendCreateResponse.status}`)
+    }
+
+    const friendCreated = await friendCreateResponse.json()
+    const friendCreateMarkers = ["auth-created-", "oneTimeCode", "active"]
+    const friendCreateText = JSON.stringify(friendCreated)
+    const missingFriendCreateMarkers = friendCreateMarkers.filter((marker) => !friendCreateText.includes(marker))
+
+    if (missingFriendCreateMarkers.length > 0) {
+      throw new Error(`friend authorization create missing markers: ${missingFriendCreateMarkers.join(", ")}`)
+    }
+
+    console.log("/api/pickup-authorizations create ok")
+
+    const friendRevokeResponse = await fetch(`${baseUrl}/api/pickup-authorizations/${friendCreated.id}/revoke`, {
+      method: "POST",
+    })
+
+    if (friendRevokeResponse.status !== 200) {
+      throw new Error(`friend authorization revoke returned ${friendRevokeResponse.status}`)
+    }
+
+    const revoked = await friendRevokeResponse.text()
+    if (!revoked.includes("\"status\":\"revoked\"")) {
+      throw new Error("friend authorization revoke missing revoked status")
+    }
+
+    console.log("/api/pickup-authorizations revoke ok")
+
+    const consumeCreateResponse = await fetch(`${baseUrl}/api/pickup-authorizations`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        pickup_request_id: "pickup-ready-001",
+        authorized_picker_name: "Consume Friend",
+        expires_at: futureExpiry,
+      }),
+    })
+    const consumable = await consumeCreateResponse.json()
+    const consumeResponse = await fetch(`${baseUrl}/api/pickup-authorizations/${consumable.id}/consume`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ one_time_code: consumable.oneTimeCode }),
+    })
+    const secondConsumeResponse = await fetch(`${baseUrl}/api/pickup-authorizations/${consumable.id}/consume`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ one_time_code: consumable.oneTimeCode }),
+    })
+
+    if (consumeResponse.status !== 200 || secondConsumeResponse.status !== 409) {
+      throw new Error(`friend consume statuses ${consumeResponse.status}/${secondConsumeResponse.status}`)
+    }
+
+    console.log("/api/pickup-authorizations consume ok")
   }
 }
 

@@ -31,6 +31,7 @@
 1. `User`가 준비된 `PickupRequest`에서 “친구에게 픽업 권한 공유”를 선택합니다.
 2. 서비스가 `PickupAuthorization`을 생성합니다.
    - 대상자 이름 또는 연락처, 만료 시간, 사용 가능 횟수, request scope를 포함합니다.
+   - Phase 7 vertical slice에서는 `POST /api/v1/pickup-authorizations`가 1회용 `one_time_code`를 생성하고 list 응답에는 masked `code_hint`만 노출합니다.
 3. `AuthorizedPicker`는 제한된 링크 또는 code card를 받습니다.
 4. `AuthorizedPicker`가 cafe에서 code를 제시합니다.
 5. `Host`는 authorization 상태를 확인합니다.
@@ -41,6 +42,7 @@
 
 - `PickupAuthorization.expired`: 대리 수령자는 수령할 수 없고 `User`에게 재공유 CTA를 제공합니다.
 - `PickupAuthorization.revoked`: `User`가 공유를 취소하면 link/code가 즉시 무효화됩니다.
+- `wrong code` 또는 `already used`: `POST /api/v1/pickup-authorizations/{authorization_id}/consume`은 각각 거절 상태를 반환하고 성공처럼 처리하지 않습니다.
 - `AuthorizedPicker` identity mismatch: host는 `IncidentReport.open` 또는 `manual_review_required`로 escalates.
 - `PickupRequest.canceled`: 연결된 authorization은 모두 `revoked` 처리됩니다.
 

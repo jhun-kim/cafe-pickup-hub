@@ -26,6 +26,10 @@ Versioned endpoints:
 - `GET /api/v1/hubs`
 - `GET /api/v1/pickup-requests`
 - `POST /api/v1/pickup-requests`
+- `GET /api/v1/pickup-authorizations`
+- `POST /api/v1/pickup-authorizations`
+- `POST /api/v1/pickup-authorizations/{authorization_id}/revoke`
+- `POST /api/v1/pickup-authorizations/{authorization_id}/consume`
 - `GET /api/v1/host/operations`
 - `POST /api/v1/host/operations/{pickup_request_id}/actions`
 
@@ -63,4 +67,12 @@ Backend 직접 host operation smoke:
 curl -i -X POST http://127.0.0.1:8001/api/v1/host/operations/pickup-confirmed-002/actions \
   -H 'content-type: application/json' \
   -d '{"action":"receive_package","storage_slot_id":"slot-river-b201","note":"Courier seal checked"}'
+```
+
+Backend 직접 friend authorization smoke:
+
+```bash
+curl -i -X POST http://127.0.0.1:8001/api/v1/pickup-authorizations \
+  -H 'content-type: application/json' \
+  -d '{"pickup_request_id":"pickup-ready-001","authorized_picker_name":"Minji Lee","expires_at":"2026-06-14T20:30:00+09:00"}'
 ```

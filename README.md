@@ -39,6 +39,10 @@ uv run pytest -q
 - `GET /api/v1/hubs` storage slot과 trust badge를 포함한 v1 허브 목록
 - `GET /api/v1/pickup-requests` package, payment, authorization 상태를 포함한 수령 요청 목록
 - `POST /api/v1/pickup-requests` pickup request 예약 생성
+- `GET /api/v1/pickup-authorizations` friend/delegate pickup authorization 목록
+- `POST /api/v1/pickup-authorizations` 1회용 친구 픽업 권한 생성
+- `POST /api/v1/pickup-authorizations/{authorization_id}/revoke` 권한 취소
+- `POST /api/v1/pickup-authorizations/{authorization_id}/consume` 1회용 코드 사용
 - `GET /api/v1/host/operations` host receive/store/handoff 작업 목록
 - `POST /api/v1/host/operations/{pickup_request_id}/actions` 입고 등록, 보관함 배정, 픽업 완료 action
 - `GET /health` 서비스 상태
@@ -72,12 +76,12 @@ cd backend
 uv run fastapi dev src/cafe_pickup_hub/main.py --host 127.0.0.1 --port 8001
 
 cd frontend
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8001 npm run dev -- --hostname 127.0.0.1 --port 3002
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8001 NEXT_PUBLIC_FRONTEND_BASE_URL=http://127.0.0.1:3002 npm run dev -- --hostname 127.0.0.1 --port 3002
 API_CONTRACT_EXPECT_SOURCE=api ROUTE_SMOKE_BASE_URL=http://127.0.0.1:3002 npm run smoke:api-contract
 ```
 
 Backend가 꺼져 있거나 `/api/v1` contract parsing에 실패하면 frontend는 demo fallback을 사용하되, 화면에 `API 상태: demo fallback`과 이유를 표시합니다.
-Demo fallback 상태에서는 실제 예약 또는 host operation 성공을 표시하지 않고 action button을 차단합니다.
+Demo fallback 상태에서는 실제 예약, host operation, friend authorization 성공을 표시하지 않고 action button을 차단합니다.
 
 ## MVP 수익/운영 가정
 

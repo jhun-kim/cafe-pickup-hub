@@ -89,6 +89,20 @@ class PickupRequestCreateRequest(ApiSchema):
     delivery_note: str = Field(min_length=1)
 
 
+class PickupAuthorizationCreateRequest(ApiSchema):
+    pickup_request_id: str = Field(min_length=1)
+    authorized_picker_name: str = Field(min_length=1)
+    expires_at: str = Field(min_length=1)
+
+
+class PickupAuthorizationConsumeRequest(ApiSchema):
+    one_time_code: str = Field(min_length=1)
+
+
+class PickupAuthorizationCreateResponse(PickupAuthorizationResponse):
+    one_time_code: str = Field(min_length=1)
+
+
 class HostOperationActionRequest(ApiSchema):
     action: HostOperationAction
     storage_slot_id: str | None = Field(default=None, min_length=1)
