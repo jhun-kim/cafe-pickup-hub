@@ -1,10 +1,13 @@
 from pydantic import BaseModel, ConfigDict, Field
 
 from cafe_pickup_hub.domain.models import (
+    AdminTrustAction,
     HostOperationAction,
+    IncidentStatus,
     PackageStatus,
     PickupAuthorizationStatus,
     PickupRequestStatus,
+    RiskLevel,
     StorageSlotStatus,
 )
 
@@ -122,3 +125,55 @@ class HostOperationItemResponse(ApiSchema):
     hub: HubResponse
     pickup_request: PickupRequestResponse
     operation: HostOperationSummaryResponse
+
+
+class IncidentReportResponse(ApiSchema):
+    id: str
+    pickup_request_id: str
+    hub_id: str
+    status: IncidentStatus
+    reason: str
+    severity: str
+
+
+class RiskRecordResponse(ApiSchema):
+    id: str
+    incident_id: str
+    level: RiskLevel
+    signal: str
+    hold_payment: bool
+    hold_settlement: bool
+
+
+class AdminAuditLogResponse(ApiSchema):
+    id: str
+    admin_user_id: str
+    action: str
+    entity_type: str
+    entity_id: str
+    note: str
+
+
+class AdminTrustSummaryResponse(ApiSchema):
+    open_incidents: int = Field(ge=0)
+    high_risk_items: int = Field(ge=0)
+    audit_events: int = Field(ge=0)
+
+
+class AdminTrustItemResponse(ApiSchema):
+    incident: IncidentReportResponse
+    risk: RiskRecordResponse
+    latest_audit_log: AdminAuditLogResponse | None
+    recommended_action: AdminTrustAction
+
+
+class AdminTrustQueueResponse(ApiSchema):
+    summary: AdminTrustSummaryResponse
+    items: tuple[AdminTrustItemResponse, ...]
+    audit_logs: tuple[AdminAuditLogResponse, ...]
+
+
+class AdminTrustActionRequest(ApiSchema):
+    action: AdminTrustAction
+    admin_user_id: str = Field(min_length=1)
+    note: str = Field(min_length=1, max_length=240)

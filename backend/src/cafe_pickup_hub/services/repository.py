@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from cafe_pickup_hub.domain.models import PickupAuthorization, PickupRequest
+from cafe_pickup_hub.domain.models import AdminAuditLog, IncidentReport, PickupAuthorization, PickupRequest, RiskRecord
 
 
 @dataclass(slots=True)
@@ -59,3 +59,40 @@ class InMemoryPickupRequestRepository:
         )
         self.update_pickup_request(pickup_request.model_copy(update={"authorizations": updated_authorizations}))
         return authorization
+
+
+@dataclass(slots=True)
+class InMemoryAdminTrustRepository:
+    initial_incidents: tuple[IncidentReport, ...]
+    initial_risks: tuple[RiskRecord, ...]
+    initial_audit_logs: tuple[AdminAuditLog, ...]
+    updated_incidents: dict[str, IncidentReport] = field(default_factory=dict)
+    updated_risks: dict[str, RiskRecord] = field(default_factory=dict)
+    created_audit_logs: list[AdminAuditLog] = field(default_factory=list)
+
+    def list_incidents(self) -> tuple[IncidentReport, ...]:
+        return tuple(self.updated_incidents.get(item.id, item) for item in self.initial_incidents)
+
+    def get_incident(self, incident_id: str) -> IncidentReport | None:
+        return next((item for item in self.list_incidents() if item.id == incident_id), None)
+
+    def update_incident(self, incident: IncidentReport) -> IncidentReport:
+        self.updated_incidents[incident.id] = incident
+        return incident
+
+    def list_risks(self) -> tuple[RiskRecord, ...]:
+        return tuple(self.updated_risks.get(item.id, item) for item in self.initial_risks)
+
+    def get_risk_by_incident(self, incident_id: str) -> RiskRecord | None:
+        return next((item for item in self.list_risks() if item.incident_id == incident_id), None)
+
+    def update_risk(self, risk: RiskRecord) -> RiskRecord:
+        self.updated_risks[risk.id] = risk
+        return risk
+
+    def list_audit_logs(self) -> tuple[AdminAuditLog, ...]:
+        return (*self.initial_audit_logs, *self.created_audit_logs)
+
+    def add_audit_log(self, audit_log: AdminAuditLog) -> AdminAuditLog:
+        self.created_audit_logs.append(audit_log)
+        return audit_log

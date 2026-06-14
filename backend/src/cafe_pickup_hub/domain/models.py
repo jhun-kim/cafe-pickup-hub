@@ -36,6 +36,18 @@ class IncidentStatus(StrEnum):
     ESCALATED = "escalated"
 
 
+class RiskLevel(StrEnum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+class AdminTrustAction(StrEnum):
+    START_REVIEW = "start_review"
+    RESOLVE = "resolve"
+    ESCALATE = "escalate"
+
+
 class StorageSlotStatus(StrEnum):
     AVAILABLE = "available"
     RESERVED = "reserved"
@@ -152,6 +164,15 @@ class IncidentReport(DomainModel):
     severity: str
 
 
+class RiskRecord(DomainModel):
+    id: str
+    incident_id: str
+    level: RiskLevel
+    signal: str
+    hold_payment: bool
+    hold_settlement: bool
+
+
 class Notification(DomainModel):
     id: str
     user_id: str
@@ -166,3 +187,4 @@ class AdminAuditLog(DomainModel):
     action: str
     entity_type: str
     entity_id: str
+    note: str = ""

@@ -90,6 +90,22 @@
    - no_fault, host_fault, user_fault, courier_fault, fraud_suspected.
 5. `IncidentReport.resolved` 또는 `escalated`로 전환하고 audit log를 남깁니다.
 
+### Phase 7B operational trust slice
+
+1. `Admin`은 `/api/v1/admin/trust`에서 `IncidentReport`, `RiskRecord`, `AdminAuditLog`를 하나의 queue로 조회합니다.
+   - `open_incidents`, `high_risk_items`, `audit_events` summary를 함께 봅니다.
+   - 각 queue item은 incident 상태, risk level, 결제/정산 hold 여부, 최신 audit 기록, `recommended_action`을 포함합니다.
+2. `/admin` 화면은 same-origin `GET /api/admin-trust`를 먼저 호출합니다.
+   - backend가 reachable이면 `API 상태: live v1`을 표시합니다.
+   - backend가 unreachable이면 demo fallback을 표시하고 실제 관리자 조치 성공처럼 보이지 않게 action button을 비활성화합니다.
+3. `Admin`이 검토를 시작하면 same-origin `POST /api/admin-trust/incidents/{incident_id}/actions`가 backend `POST /api/v1/admin/trust/incidents/{incident_id}/actions`로 전달됩니다.
+   - `start_review`는 `IncidentReport.open -> under_review`로 전환합니다.
+   - 연결된 `RiskRecord.high`는 `medium`으로 낮추며 hold 상태는 audit 판단 전까지 유지합니다.
+   - `AdminAuditLog`는 `admin_user_id`, `action`, `entity_type`, `entity_id`, `note`를 남깁니다.
+4. 잘못된 상태 전환은 409로 거절합니다.
+   - 예: `resolved -> under_review` 재오픈은 현재 MVP 정책상 허용하지 않습니다.
+5. 다음 단계에서는 `resolve`, `escalate`, payment/settlement hold release, 증빙 첨부, 역할 기반 관리자 권한을 세분화합니다.
+
 ## User-facing State Dependencies
 
 | Flow moment | Required state |

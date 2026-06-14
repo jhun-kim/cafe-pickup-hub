@@ -14,6 +14,9 @@ const requiredFiles = [
   "app/api/pickup-authorizations/route.ts",
   "app/api/pickup-authorizations/[authorizationId]/revoke/route.ts",
   "app/api/pickup-authorizations/[authorizationId]/consume/route.ts",
+  "components/admin/AdminTrustBoard.tsx",
+  "app/api/admin-trust/route.ts",
+  "app/api/admin-trust/incidents/[incidentId]/actions/route.ts",
 ]
 
 for (const file of requiredFiles) {
@@ -38,6 +41,10 @@ const sourceChecks = [
   {
     file: "app/friend-permission/page.tsx",
     markers: ["loadFriendAuthorizationsFromSameOrigin", "data-api-source", "FriendAuthorizationPanel"],
+  },
+  {
+    file: "app/admin/page.tsx",
+    markers: ["loadAdminTrustFromSameOrigin", "data-api-source", "AdminTrustBoard"],
   },
 ]
 
@@ -73,6 +80,10 @@ if (baseUrl) {
     {
       path: "/friend-permission",
       markers: ["data-api-source=", "data-auth-mode=", "친구에게 픽업 권한 공유"],
+    },
+    {
+      path: "/admin",
+      markers: ["data-api-source=", "data-admin-trust-mode=", "분쟁 / 리스크 판단"],
     },
   ]
 
@@ -211,6 +222,30 @@ if (baseUrl) {
     }
 
     console.log("/api/pickup-authorizations consume ok")
+
+    const adminActionResponse = await fetch(`${baseUrl}/api/admin-trust/incidents/incident-code-mismatch/actions`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "start_review",
+        admin_user_id: "admin-ops-1",
+        note: "Smoke admin trust review via frontend proxy",
+      }),
+    })
+
+    if (adminActionResponse.status !== 200) {
+      throw new Error(`admin trust action returned ${adminActionResponse.status}`)
+    }
+
+    const adminAction = await adminActionResponse.text()
+    const adminActionMarkers = ["incident-code-mismatch", "\"status\":\"under_review\"", "\"action\":\"start_review\""]
+    const missingAdminActionMarkers = adminActionMarkers.filter((marker) => !adminAction.includes(marker))
+
+    if (missingAdminActionMarkers.length > 0) {
+      throw new Error(`admin trust action missing markers: ${missingAdminActionMarkers.join(", ")}`)
+    }
+
+    console.log("/api/admin-trust action ok")
   }
 }
 
