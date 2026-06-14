@@ -43,3 +43,57 @@
   border-color: rgba(79, 125, 93, 0.5);
   background: rgba(79, 125, 93, 0.12);
 }
+
+.permission-warning,
+.permission-result,
+.permission-error {
+  border-radius: 14px;
+  padding: 12px;
+  font-weight: 850;
+}
+
+.permission-warning,
+.permission-error {
+  background: rgba(232, 111, 81, 0.12);
+  color: #833722;
+}
+
+.permission-result {
+  display: grid;
+  gap: 4px;
+  background: rgba(79, 125, 93, 0.12);
+  color: #2f6544;
+}
+
+.permission-form {
+  display: grid;
+  gap: 12px;
+}
+
+.permission-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--coffee);
+  font-weight: 850;
+}
+
+.permission-form input {
+  width: 100%;
+  border: 1px solid rgba(91, 57, 44, 0.14);
+  border-radius: 14px;
+  background: white;
+  padding: 12px;
+  color: var(--ink);
+  font: inherit;
+}
+
+.permission-form--inline {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.permission-card button:disabled,
+.permission-form input:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}

@@ -1,5 +1,5 @@
 import type { ApiHostOperationItem, ApiHub, ApiPickupRequest, ApiResult } from "@/lib/api-contract"
-import type { HostOperationContracts, PickupContracts } from "@/lib/api-client"
+import type { FriendAuthorizationContracts, HostOperationContracts, PickupContracts } from "@/lib/api-client"
 import { cafeSpots, flowSteps } from "@/lib/uiux-data"
 
 export function demoContracts(apiBaseUrl: string, reason: string): ApiResult<PickupContracts> {
@@ -38,6 +38,20 @@ export function demoHostOperations(apiBaseUrl: string, reason: string): ApiResul
   ]
 
   return { data: { operations }, source: { kind: "demo", apiBaseUrl, reason } }
+}
+
+export function demoFriendAuthorizations(apiBaseUrl: string, reason: string): ApiResult<FriendAuthorizationContracts> {
+  const pickupRequest = demoPickupRequests()[0]
+  if (!pickupRequest) {
+    return { data: { pickupRequest: null, authorizations: [] }, source: { kind: "demo", apiBaseUrl, reason } }
+  }
+  return {
+    data: {
+      pickupRequest: { ...pickupRequest, authorizations: [] },
+      authorizations: [],
+    },
+    source: { kind: "demo", apiBaseUrl, reason },
+  }
 }
 
 function demoPickupRequests(): readonly ApiPickupRequest[] {

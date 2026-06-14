@@ -2,14 +2,14 @@ from fastapi import APIRouter, HTTPException, status
 
 from cafe_pickup_hub.domain.errors import InvalidStateTransitionError
 from cafe_pickup_hub.schemas import HostOperationActionRequest, HostOperationItemResponse
-from cafe_pickup_hub.services import (
-    HubNotFoundError,
+from cafe_pickup_hub.services.host_operations import (
+    HostOperationItem,
     HostOperationService,
     PickupRequestNotFoundError,
     StorageSlotNotFoundError,
     get_host_operation_service,
 )
-from cafe_pickup_hub.services.host_operations import HostOperationItem
+from cafe_pickup_hub.services.pickup_requests import HubNotFoundError
 
 router = APIRouter(tags=["v1-host-operations"])
 

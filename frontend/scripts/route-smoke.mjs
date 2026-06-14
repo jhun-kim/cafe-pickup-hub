@@ -11,7 +11,7 @@ const checks = [
   },
   {
     path: "/friend-permission",
-    markers: ["일회용 코드", "권한 취소", "사용 즉시 만료"],
+    markers: ["일회용 코드", "권한 취소", "사용 즉시 만료", "data-api-source=", "data-auth-mode="],
   },
   {
     path: "/host",
