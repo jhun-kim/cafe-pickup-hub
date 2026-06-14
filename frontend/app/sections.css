@@ -1,0 +1,151 @@
+.stats,
+.explore,
+.story-strip,
+.host-band {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: clamp(18px, 4vw, 56px);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+}
+
+.stats div {
+  min-height: 124px;
+  background: var(--panel);
+  padding: 22px;
+}
+
+.stats strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--coffee);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.explore {
+  padding-top: 92px;
+  padding-bottom: 92px;
+}
+
+.section-heading {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.hub-card {
+  display: grid;
+  min-height: 420px;
+  border: 1px solid var(--ink);
+  background: var(--panel);
+  padding: 20px;
+  box-shadow: 0 12px 0 rgba(23, 32, 28, 0.08);
+}
+
+.hub-card p {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.hub-card__topline,
+.hub-card__price {
+  justify-content: space-between;
+  gap: 12px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.hub-card__badges {
+  flex-wrap: wrap;
+  gap: 8px;
+  align-self: start;
+}
+
+.hub-card__badges span {
+  border: 1px solid var(--line);
+  background: rgba(159, 189, 99, 0.18);
+  padding: 7px 9px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.hub-card__metrics {
+  justify-content: space-between;
+  gap: 12px;
+  align-self: end;
+}
+
+.hub-card dd {
+  margin: 4px 0 0;
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.hub-card__price {
+  align-self: end;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.story-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding-bottom: 92px;
+}
+
+.story-card {
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: var(--panel);
+}
+
+.story-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.story-card div {
+  padding: 20px;
+}
+
+.story-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.host-band {
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 56px;
+  border: 1px solid var(--ink);
+  background: var(--coffee);
+  color: var(--panel);
+  padding-block: 34px;
+}
+
+.host-band p {
+  max-width: 660px;
+  color: rgba(255, 250, 240, 0.76);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.6;
+}

@@ -1,0 +1,50 @@
+# Cafe Pickup Hub
+
+Cafe Pickup Hub는 카페와 동네 소상공인의 유휴 공간을 안전한 택배·중고거래 물품 픽업 허브로 대여하는 MVP입니다. 에어비앤비가 숙소를 공유하듯, 이 서비스는 신뢰 가능한 오프라인 공간을 수령 거점으로 공유합니다.
+
+## 핵심 아이디어
+
+- 사용자는 낮 시간 부재 중 분실 위험이 있는 택배나 중고거래 물품의 수령지를 단골 카페로 설정합니다.
+- 카페 사장님은 보관 수수료와 방문객 유입 효과를 얻습니다.
+- 사용자는 퇴근길에 안전하게 물품을 찾고, 커피 구매로 카페와 상생합니다.
+- 친구·가족에게 픽업 권한을 공유할 수 있는 구조를 전제로 합니다.
+
+## 폴더 구조
+
+```text
+backend/   uv + FastAPI API 서버
+frontend/  Next.js App Router + TypeScript 웹 UI
+```
+
+## Backend 실행
+
+```bash
+cd backend
+uv sync
+uv run fastapi dev src/cafe_pickup_hub/main.py
+uv run pytest -q
+```
+
+주요 API:
+
+- `GET /health` 서비스 상태
+- `GET /api/hubs` 픽업 허브 목록
+- `GET /api/hubs/{hub_id}` 픽업 허브 상세
+
+## Frontend 실행
+
+```bash
+cd frontend
+npm install
+npm run dev
+npm run lint
+npm run build
+```
+
+개발 중 백엔드 주소를 바꾸려면 `NEXT_PUBLIC_API_BASE_URL`을 설정하세요. 기본값은 `http://localhost:8000`입니다.
+
+## MVP 수익/운영 가정
+
+- 카페는 보관 슬롯 단위로 일일 수용량을 관리합니다.
+- 사용자는 소형/중형/대형 물품 허용 여부와 운영 시간을 보고 허브를 선택합니다.
+- 초기 수익 모델은 보관 수수료와 픽업 방문 전환 효과입니다.

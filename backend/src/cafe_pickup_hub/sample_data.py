@@ -1,0 +1,88 @@
+from cafe_pickup_hub.models import HubAmenity, HubId, HubListing, ListingId, PickupHub
+
+SAMPLE_HUBS: tuple[PickupHub, ...] = (
+    PickupHub(
+        id=HubId("hub-maple-counter"),
+        cafe_name="Maple Counter Cafe",
+        neighborhood="Seongsu",
+        address="17 Yeonmujang 5-gil, Seongdong-gu",
+        walk_minutes_from_station=4,
+        rating=4.9,
+        open_until="22:30",
+        available_slots=18,
+        price_per_day_krw=6500,
+        trust_badges=("staff handoff", "CCTV entrance", "sealed shelf"),
+        amenities=(
+            HubAmenity(label="Counter shelf", detail="Behind staff line of sight"),
+            HubAmenity(label="SMS pickup", detail="Code checked before handoff"),
+        ),
+        host_note="Best for small parcels and marketplace swaps near Seongsu Station.",
+    ),
+    PickupHub(
+        id=HubId("hub-river-locker"),
+        cafe_name="River Locker Espresso",
+        neighborhood="Hapjeong",
+        address="9 Yanghwa-ro 6-gil, Mapo-gu",
+        walk_minutes_from_station=6,
+        rating=4.8,
+        open_until="23:00",
+        available_slots=10,
+        price_per_day_krw=8200,
+        trust_badges=("numbered cubbies", "late pickup", "staff verified"),
+        amenities=(
+            HubAmenity(label="Numbered cubbies", detail="One parcel per cubby"),
+            HubAmenity(label="Late pickup", detail="Pickup possible until closing"),
+        ),
+        host_note="Useful for evening handoffs after work or class.",
+    ),
+    PickupHub(
+        id=HubId("hub-garden-window"),
+        cafe_name="Garden Window Roasters",
+        neighborhood="Yeonnam",
+        address="42 Donggyo-ro 38-gil, Mapo-gu",
+        walk_minutes_from_station=8,
+        rating=4.7,
+        open_until="21:30",
+        available_slots=14,
+        price_per_day_krw=5900,
+        trust_badges=("quiet pickup zone", "photo receipt", "dry storage"),
+        amenities=(
+            HubAmenity(label="Pickup bench", detail="Dedicated parcel bench by bar"),
+            HubAmenity(label="Photo receipt", detail="Arrival photo recorded by staff"),
+        ),
+        host_note="A calm option for low-friction weekend neighborhood pickups.",
+    ),
+)
+
+SAMPLE_LISTINGS: tuple[HubListing, ...] = (
+    HubListing(
+        id=ListingId("listing-small-counter"),
+        hub_id=HubId("hub-maple-counter"),
+        title="Small parcel counter slot",
+        package_size="Shoebox or smaller",
+        storage_type="Staff-visible shelf",
+        daily_capacity=18,
+        cutoff_time="21:45",
+        price_per_day_krw=6500,
+    ),
+    HubListing(
+        id=ListingId("listing-evening-cubby"),
+        hub_id=HubId("hub-river-locker"),
+        title="Evening pickup cubby",
+        package_size="Backpack sized",
+        storage_type="Numbered cubby",
+        daily_capacity=10,
+        cutoff_time="22:30",
+        price_per_day_krw=8200,
+    ),
+    HubListing(
+        id=ListingId("listing-weekend-bench"),
+        hub_id=HubId("hub-garden-window"),
+        title="Weekend pickup bench",
+        package_size="Small tote sized",
+        storage_type="Dry bench storage",
+        daily_capacity=14,
+        cutoff_time="20:45",
+        price_per_day_krw=5900,
+    ),
+)

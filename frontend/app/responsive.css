@@ -1,0 +1,35 @@
+@media (max-width: 900px) {
+  .hero__content,
+  .hub-grid,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual,
+  .hero-visual img {
+    min-height: 380px;
+  }
+
+  .story-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .host-band {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hero-visual__ticket {
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    width: auto;
+  }
+}
