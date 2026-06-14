@@ -1,5 +1,5 @@
 import type { ApiHub, ApiPickupAuthorization, ApiPackage, ApiPickupRequest, ApiStorageSlot } from "@/lib/api-contract"
-import { ApiContractError } from "@/lib/api-client"
+import { ApiContractError } from "@/lib/api-errors"
 
 export function parseHubList(payload: unknown): readonly ApiHub[] {
   if (!Array.isArray(payload)) {
@@ -13,6 +13,14 @@ export function parsePickupRequestList(payload: unknown): readonly ApiPickupRequ
     throw new ApiContractError("/api/v1/pickup-requests", "response is not an array")
   }
   return payload.map(parsePickupRequest).filter(isPresent)
+}
+
+export function parsePickupRequestResponse(payload: unknown): ApiPickupRequest {
+  const pickupRequest = parsePickupRequest(payload)
+  if (pickupRequest === null) {
+    throw new ApiContractError("/api/v1/pickup-requests", "response is not a pickup request")
+  }
+  return pickupRequest
 }
 
 function parseHub(payload: unknown): ApiHub | null {

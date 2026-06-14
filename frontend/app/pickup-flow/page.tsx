@@ -1,11 +1,19 @@
 import Link from "next/link"
 
+import { BookingForm } from "@/components/pickup/BookingForm"
 import { IconMotif } from "@/components/uiux/IconMotif"
 import { StatusPill } from "@/components/uiux/StatusPill"
 import { getPickupFlowData } from "@/lib/api-view-models"
 
-export default async function PickupFlowPage() {
-  const { sourceView, steps } = await getPickupFlowData()
+type PickupFlowPageProps = {
+  readonly searchParams?: Promise<{
+    readonly hubId?: string
+  }>
+}
+
+export default async function PickupFlowPage({ searchParams }: PickupFlowPageProps) {
+  const params = await searchParams
+  const { selectedHub, sourceView, steps } = await getPickupFlowData(params?.hubId)
 
   return (
     <main className="flow-stage">
@@ -42,6 +50,12 @@ export default async function PickupFlowPage() {
           </article>
         ))}
       </section>
+      <BookingForm
+        apiSourceKind={sourceView.source.kind}
+        hubId={selectedHub.id}
+        hubName={selectedHub.name}
+        priceLabel={selectedHub.priceLabel}
+      />
     </main>
   )
 }

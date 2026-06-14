@@ -7,7 +7,7 @@ const checks = [
   },
   {
     path: "/pickup-flow",
-    markers: ["Hub 발견부터 보안 픽업까지", "API 상태", "data-api-source=", "href=\"/friend-permission\""],
+    markers: ["Hub 발견부터 보안 픽업까지", "API 상태", "data-api-source=", "픽업 예약 시작", "href=\"/friend-permission\""],
   },
   {
     path: "/friend-permission",

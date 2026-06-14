@@ -78,3 +78,11 @@ class PickupRequestResponse(ApiSchema):
     authorizations: tuple[PickupAuthorizationResponse, ...]
     pickup_code: str
     pickup_window: str
+
+
+class PickupRequestCreateRequest(ApiSchema):
+    hub_id: str = Field(min_length=1)
+    user_id: str = Field(min_length=1)
+    package_size: str = Field(min_length=1)
+    pickup_window: str = Field(min_length=1)
+    delivery_note: str = Field(min_length=1)

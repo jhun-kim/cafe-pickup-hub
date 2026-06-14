@@ -4,6 +4,7 @@ from cafe_pickup_hub.schemas.v1 import (
     PackageResponse,
     PaymentResponse,
     PickupAuthorizationResponse,
+    PickupRequestCreateRequest,
     PickupRequestResponse,
     StorageSlotResponse,
 )
@@ -14,6 +15,7 @@ __all__ = (
     "PackageResponse",
     "PaymentResponse",
     "PickupAuthorizationResponse",
+    "PickupRequestCreateRequest",
     "PickupRequestResponse",
     "StorageSlotResponse",
 )

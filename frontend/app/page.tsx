@@ -88,7 +88,7 @@ export default async function Home() {
                   <span>{spot.trust}</span>
                 </div>
               </div>
-              <Link href="/pickup-flow" className="small-cta">
+              <Link href={`/pickup-flow?hubId=${spot.id}`} className="small-cta">
                 선택
               </Link>
             </article>

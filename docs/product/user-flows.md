@@ -10,6 +10,7 @@
 3. `User`가 `Hub`를 선택하고 `PickupRequest`를 생성합니다.
    - package size, 예상 도착일, pickup time window, 배송 메모를 입력합니다.
 4. `Payment`가 `authorized` 또는 `pending` 상태가 됩니다.
+   - MVP vertical slice에서는 `POST /api/v1/pickup-requests`가 `PickupRequest.confirmed`, `Package.expected`, `Payment.authorized` 상태를 생성합니다.
 5. `Host`가 물품 도착을 확인하고 `Package.received`와 슬롯 배정을 기록합니다.
 6. `Notification`이 `User`에게 pickup ready 상태를 알립니다.
 7. `User`가 cafe에서 pickup code를 제시합니다.
