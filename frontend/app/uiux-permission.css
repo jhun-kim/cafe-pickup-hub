@@ -1,0 +1,45 @@
+.detail-card {
+  display: grid;
+  grid-template-columns: 98px minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 22px;
+  padding: 16px;
+}
+
+.permission-card {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 18px;
+}
+
+.code-panel {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  border-radius: 22px;
+  background: white;
+  padding: 22px;
+}
+
+.code-panel strong {
+  font-size: 2rem;
+}
+
+.friend-option {
+  gap: 10px;
+  border: 1px solid rgba(91, 57, 44, 0.12);
+  border-radius: 18px;
+  background: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.friend-option span {
+  display: grid;
+}
+
+.friend-option.is-selected {
+  border-color: rgba(79, 125, 93, 0.5);
+  background: rgba(79, 125, 93, 0.12);
+}

@@ -1,0 +1,58 @@
+.ops-map {
+  position: relative;
+  min-height: 240px;
+  overflow: hidden;
+  margin-top: 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(79, 125, 93, 0.18) 1px, transparent 1px),
+    linear-gradient(rgba(79, 125, 93, 0.18) 1px, transparent 1px), #f4e8d5;
+  background-size: 44px 44px;
+}
+
+.map-pin {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px 999px 999px 4px;
+  background: var(--coral);
+  transform: rotate(-45deg);
+}
+
+.map-pin--one {
+  top: 42px;
+  left: 18%;
+}
+
+.map-pin--two {
+  top: 128px;
+  left: 48%;
+}
+
+.map-pin--three {
+  top: 76px;
+  right: 18%;
+}
+
+.map-card {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  border-radius: 18px;
+  background: white;
+  padding: 16px;
+}
+
+.funnel div {
+  display: grid;
+  gap: 8px;
+  color: var(--coffee);
+  font-weight: 850;
+}
+
+.funnel span {
+  display: block;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--matcha), var(--coral));
+}
