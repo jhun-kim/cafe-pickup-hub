@@ -1,6 +1,9 @@
 from cafe_pickup_hub.domain.models import (
+    AdminAuditLog,
     Host,
     Hub,
+    IncidentReport,
+    IncidentStatus,
     Package,
     PackageStatus,
     Payment,
@@ -8,6 +11,8 @@ from cafe_pickup_hub.domain.models import (
     PickupAuthorizationStatus,
     PickupRequest,
     PickupRequestStatus,
+    RiskLevel,
+    RiskRecord,
     StorageSlot,
     StorageSlotStatus,
     User,
@@ -100,5 +105,62 @@ SAMPLE_PICKUP_REQUESTS: tuple[PickupRequest, ...] = (
         authorizations=(),
         pickup_code="pending",
         pickup_window="2026-06-14 19:00-22:00",
+    ),
+)
+
+SAMPLE_INCIDENT_REPORTS: tuple[IncidentReport, ...] = (
+    IncidentReport(
+        id="incident-code-mismatch",
+        pickup_request_id="pickup-ready-001",
+        hub_id="hub-maple-counter",
+        status=IncidentStatus.OPEN,
+        reason="pickup code mismatch after delegated pickup attempt",
+        severity="urgent",
+    ),
+    IncidentReport(
+        id="incident-overdue-storage",
+        pickup_request_id="pickup-confirmed-002",
+        hub_id="hub-river-locker",
+        status=IncidentStatus.OPEN,
+        reason="storage exceeds 24 hour operating policy",
+        severity="watch",
+    ),
+)
+
+SAMPLE_RISK_RECORDS: tuple[RiskRecord, ...] = (
+    RiskRecord(
+        id="risk-code-mismatch",
+        incident_id="incident-code-mismatch",
+        level=RiskLevel.HIGH,
+        signal="wrong code retry plus active friend authorization",
+        hold_payment=True,
+        hold_settlement=True,
+    ),
+    RiskRecord(
+        id="risk-overdue-storage",
+        incident_id="incident-overdue-storage",
+        level=RiskLevel.MEDIUM,
+        signal="package stored past pickup window",
+        hold_payment=False,
+        hold_settlement=True,
+    ),
+)
+
+SAMPLE_ADMIN_AUDIT_LOGS: tuple[AdminAuditLog, ...] = (
+    AdminAuditLog(
+        id="audit-incident-created",
+        admin_user_id="system-risk",
+        action="incident_created",
+        entity_type="IncidentReport",
+        entity_id="incident-code-mismatch",
+        note="system opened trust review from pickup verification failure",
+    ),
+    AdminAuditLog(
+        id="audit-risk-hold",
+        admin_user_id="system-risk",
+        action="settlement_hold",
+        entity_type="RiskRecord",
+        entity_id="risk-code-mismatch",
+        note="settlement hold applied while admin reviews evidence",
     ),
 )
