@@ -19,7 +19,7 @@ const checks = [
   },
   {
     path: "/admin",
-    markers: ["승인 판단", "Risk hold", "분쟁 처리"],
+    markers: ["API 상태", "data-api-source=", "data-admin-trust-mode=", "분쟁 / 리스크 판단", "Audit log"],
   },
 ]
 
