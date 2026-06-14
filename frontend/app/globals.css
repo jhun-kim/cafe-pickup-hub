@@ -1,6 +1,12 @@
 @import "./hero.css";
 @import "./sections.css";
 @import "./responsive.css";
+@import "./uiux-shared.css";
+@import "./uiux-mobile.css";
+@import "./uiux-flow.css";
+@import "./uiux-permission.css";
+@import "./uiux-dashboard.css";
+@import "./uiux-admin.css";
 
 :root {
   --ink: #17201c;
