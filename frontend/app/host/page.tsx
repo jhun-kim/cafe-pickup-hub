@@ -10,13 +10,32 @@ const pickupRows = [
   ["16:30", "C3번", "박지훈", "확인 필요"],
   ["18:00", "107번", "정유진", "예정"],
 ] as const
+const todayActions = [
+  { title: "입고 등록", detail: "배송기사 도착 6건", action: "입고 시작", iconIndex: 1 },
+  { title: "보관함 배정", detail: "크기 확인 대기 4건", action: "슬롯 배정", iconIndex: 2 },
+  { title: "픽업 완료", detail: "고객 도착 3건", action: "코드 확인", iconIndex: 3 },
+] as const
 
 export default function HostPage() {
   return (
     <DashboardShell title="안녕하세요, 모카우드 카페님" subtitle="오늘의 픽업허브 운영 현황을 확인하세요." active="host">
+      <section className="priority-strip" aria-label="오늘 우선 작업">
+        {todayActions.map((item) => (
+          <article key={item.title} className="priority-card">
+            <IconMotif index={item.iconIndex} label="" size="md" />
+            <div>
+              <span>오늘 우선 작업</span>
+              <strong>{item.title}</strong>
+              <p>{item.detail}</p>
+            </div>
+            <button type="button">{item.action}</button>
+          </article>
+        ))}
+      </section>
+
       <section className="metric-grid metric-grid--five">
         {hostMetrics.map((metric) => (
-          <article key={metric.label} className="metric-card">
+          <article key={metric.label} className="metric-card" data-noninteractive="metric-summary">
             <IconMotif index={metric.iconIndex} label="" size="md" />
             <span>{metric.label}</span>
             <strong>{metric.value}</strong>
@@ -33,7 +52,11 @@ export default function HostPage() {
           </div>
           <div className="slot-grid">
             {shelfSlots.map((slot, index) => (
-              <div key={slot} className={index % 5 === 2 ? "slot-cell is-reserved" : index % 4 === 0 ? "slot-cell is-empty" : "slot-cell is-used"}>
+              <div
+                key={slot}
+                className={index % 5 === 2 ? "slot-cell is-reserved" : index % 4 === 0 ? "slot-cell is-empty" : "slot-cell is-used"}
+                data-noninteractive="storage-slot-status"
+              >
                 <span>{slot}</span>
                 <IconMotif index={index % 5 === 2 ? 3 : 2} label="" size="sm" />
               </div>

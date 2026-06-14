@@ -7,6 +7,7 @@
 @import "./uiux-permission.css";
 @import "./uiux-dashboard.css";
 @import "./uiux-admin.css";
+@import "./uiux-phase2.css";
 
 :root {
   --ink: #17201c;

@@ -1,0 +1,198 @@
+.trust-chip-row,
+.permission-state-grid,
+.priority-strip,
+.triage-strip {
+  display: grid;
+  gap: 10px;
+}
+
+.trust-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.nearby-map {
+  position: relative;
+  min-height: 118px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border: 1px solid rgba(79, 125, 93, 0.16);
+  border-radius: 20px;
+  background:
+    linear-gradient(90deg, rgba(79, 125, 93, 0.14) 1px, transparent 1px),
+    linear-gradient(rgba(79, 125, 93, 0.14) 1px, transparent 1px), #f5ead8;
+  background-size: 34px 34px;
+}
+
+.nearby-map__pin {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px 999px 999px 4px;
+  background: var(--coral);
+  transform: rotate(-45deg);
+}
+
+.nearby-map__pin--one {
+  top: 28px;
+  left: 18%;
+}
+
+.nearby-map__pin--two {
+  top: 62px;
+  left: 48%;
+}
+
+.nearby-map__pin--three {
+  top: 34px;
+  right: 20%;
+}
+
+.nearby-map__label {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  gap: 2px;
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.94);
+  padding: 10px;
+  font-size: 0.78rem;
+}
+
+.permission-state-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.permission-state-grid div,
+.priority-card,
+.triage-card {
+  border: 1px solid rgba(91, 57, 44, 0.12);
+  background: white;
+}
+
+.permission-state-grid div {
+  display: grid;
+  gap: 4px;
+  min-height: 70px;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.permission-state-grid span,
+.priority-card span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.permission-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.ghost-button--danger {
+  color: #cf4f36;
+}
+
+.priority-strip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.priority-card,
+.triage-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.priority-card p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.priority-card button,
+.triage-card button {
+  border: 0;
+  border-radius: 14px;
+  background: var(--coral);
+  color: white;
+  padding: 11px 14px;
+  font-weight: 850;
+}
+
+.triage-strip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.triage-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.triage-card div {
+  display: grid;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar {
+    min-height: auto;
+  }
+
+  .dashboard-main {
+    padding: 22px 18px;
+  }
+
+  .dashboard-header,
+  .dashboard-header__actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .metric-grid--five,
+  .metric-grid--four,
+  .dashboard-grid,
+  .dashboard-grid--admin,
+  .priority-strip,
+  .triage-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .slot-grid {
+    grid-template-columns: repeat(3, minmax(72px, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .phone-frame {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .mockup-stage {
+    padding: 0;
+  }
+
+  .hero-card,
+  .detail-card {
+    grid-template-columns: 1fr;
+  }
+
+  .permission-actions,
+  .priority-card {
+    grid-template-columns: 1fr;
+  }
+}

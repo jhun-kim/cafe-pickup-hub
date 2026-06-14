@@ -10,8 +10,9 @@ export default function Home() {
     <MobileShell active="home">
       <header className="mobile-header">
         <div>
-          <h1>안녕하세요, 지은님!</h1>
-          <p>오늘도 안전한 픽업을 도와드릴게요.</p>
+          <p className="eyebrow">Nearby safe pickup hubs</p>
+          <h1>근처 안전 카페 픽업 허브</h1>
+          <p>집 앞 분실 걱정 없이 오늘 받을 카페 보관 공간을 찾으세요.</p>
         </div>
         <button className="round-button" type="button" aria-label="알림">
           <IconMotif index={3} label="" size="sm" />
@@ -30,8 +31,13 @@ export default function Home() {
 
       <section className="hero-card hero-card--home">
         <div>
-          <h2>오늘 받을 수 있는 픽업 공간</h2>
-          <p>카페의 여유 공간을 안전하게 이용해보세요.</p>
+          <div className="trust-chip-row" aria-label="안전 상태">
+            <StatusPill tone="green">직원 확인</StatusPill>
+            <StatusPill tone="neutral">1회 코드</StatusPill>
+            <StatusPill tone="neutral">도보 3분</StatusPill>
+          </div>
+          <h2>주변 카페가 안전한 수령 거점이 됩니다.</h2>
+          <p>Hub 탐색, StorageSlot 예약, Package 입고 알림, 보안 픽업까지 한 번에 진행합니다.</p>
           <Link href="/pickup-flow" className="primary-button">
             근처 카페 보기
           </Link>
@@ -44,7 +50,16 @@ export default function Home() {
       <section className="mobile-section">
         <div className="section-row">
           <h2>내 주변 픽업 카페</h2>
-          <Link href="/admin">지도 보기</Link>
+          <Link href="/pickup-flow">리스트로 보기</Link>
+        </div>
+        <div className="nearby-map" data-noninteractive="map-preview" aria-label="근처 허브 지도 미리보기">
+          <span className="nearby-map__pin nearby-map__pin--one" data-noninteractive="map-pin" />
+          <span className="nearby-map__pin nearby-map__pin--two" data-noninteractive="map-pin" />
+          <span className="nearby-map__pin nearby-map__pin--three" data-noninteractive="map-pin" />
+          <div className="nearby-map__label" data-noninteractive="map-summary">
+            <strong>역삼역 반경 600 m</strong>
+            <span>안전 배지 허브 3곳</span>
+          </div>
         </div>
         <div className="cafe-list">
           {cafeSpots.map((spot) => (
@@ -64,6 +79,7 @@ export default function Home() {
                   <span>{spot.distance}</span>
                   <span>{spot.fee}</span>
                   <span>{spot.slots}</span>
+                  <span>{spot.trust}</span>
                 </div>
               </div>
               <Link href="/pickup-flow" className="small-cta">
@@ -76,7 +92,7 @@ export default function Home() {
 
       <Link href="/friend-permission" className="trust-banner">
         <IconMotif index={3} label="안전 확인" size="sm" />
-        모든 픽업 공간은 카페 직원이 직접 관리하여 안전합니다.
+        친구나 가족에게도 만료되는 1회 권한만 공유됩니다.
         <span>›</span>
       </Link>
     </MobileShell>
