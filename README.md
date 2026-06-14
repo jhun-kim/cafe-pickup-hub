@@ -35,9 +35,20 @@ uv run pytest -q
 
 주요 API:
 
+- `GET /api/v1/health` v1 서비스 상태와 sample domain resource 수
+- `GET /api/v1/hubs` storage slot과 trust badge를 포함한 v1 허브 목록
+- `GET /api/v1/pickup-requests` package, payment, authorization 상태를 포함한 수령 요청 목록
 - `GET /health` 서비스 상태
 - `GET /api/hubs` 픽업 허브 목록
 - `GET /api/hubs/{hub_id}` 픽업 허브 상세
+- `GET /api/listings` legacy listing 목록
+
+Backend Phase 3 구조:
+
+- `backend/src/cafe_pickup_hub/domain/` 도메인 후보 모델과 상태 전환 helper
+- `backend/src/cafe_pickup_hub/schemas/` API response schema
+- `backend/src/cafe_pickup_hub/services/` MVP in-memory service data
+- `backend/src/cafe_pickup_hub/api/v1/` versioned FastAPI router
 
 ## Frontend 실행
 
