@@ -169,7 +169,17 @@ export async function consumePickupAuthorization(payload: ConsumePickupAuthoriza
 }
 
 function getApiBaseUrl(): string {
-  return process.env["NEXT_PUBLIC_API_BASE_URL"] ?? DEFAULT_API_BASE_URL
+  const configuredApiBaseUrl = process.env["NEXT_PUBLIC_API_BASE_URL"]
+  if (configuredApiBaseUrl) {
+    return configuredApiBaseUrl
+  }
+
+  const vercelHost = process.env["VERCEL_PROJECT_PRODUCTION_URL"] ?? process.env["VERCEL_URL"]
+  if (vercelHost) {
+    return `https://${vercelHost}`
+  }
+
+  return DEFAULT_API_BASE_URL
 }
 
 type FetchJsonOptions = {
