@@ -12,9 +12,9 @@ export default async function Home() {
     <MobileShell active="home">
       <header className="mobile-header">
         <div>
-          <p className="eyebrow">Nearby safe pickup hubs</p>
-          <h1>근처 안전 카페 픽업 허브</h1>
-          <p>집 앞 분실 걱정 없이 오늘 받을 카페 보관 공간을 찾으세요.</p>
+          <p className="eyebrow">가까운 안심 픽업</p>
+          <h1>오늘 받을 택배, 가까운 카페에 안전하게</h1>
+          <p>퇴근길에 들르기 쉬운 보관 카페를 한눈에 고르세요.</p>
         </div>
         <span className="round-button" data-noninteractive="home-alert-preview" aria-hidden="true">
           <IconMotif index={3} label="" size="sm" />
@@ -42,8 +42,8 @@ export default async function Home() {
             <StatusPill tone="neutral">1회 코드</StatusPill>
             <StatusPill tone="neutral">도보 3분</StatusPill>
           </div>
-          <h2>주변 카페가 안전한 수령 거점이 됩니다.</h2>
-          <p>Hub 탐색, StorageSlot 예약, Package 입고 알림, 보안 픽업까지 한 번에 진행합니다.</p>
+          <h2>엄지 하나로 카페 선택부터 픽업까지.</h2>
+          <p>카페 찾기, 보관 예약, 입고 알림, 픽업 코드 확인을 쉬운 말로 안내합니다.</p>
           <Link href="/pickup-flow" className="primary-button">
             근처 카페 보기
           </Link>
@@ -96,11 +96,13 @@ export default async function Home() {
         </div>
       </section>
 
-      <Link href="/friend-permission" className="trust-banner">
-        <IconMotif index={3} label="안전 확인" size="sm" />
-        친구나 가족에게도 만료되는 1회 권한만 공유됩니다.
-        <span>›</span>
-      </Link>
+      <section id="help" className="trust-banner trust-banner--help" aria-labelledby="help-title">
+        <IconMotif index={5} size="sm" />
+        <span>
+          <strong id="help-title">도움이 필요하세요?</strong>
+          카페 직원에게 예약 화면과 1회 코드를 보여주면 보관 위치를 바로 확인할 수 있어요.
+        </span>
+      </section>
     </MobileShell>
   )
 }

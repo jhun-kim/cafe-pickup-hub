@@ -25,7 +25,7 @@ export function HostOperationBoard({ apiSourceKind, initialOperations }: HostOpe
       setActionState({
         kind: "error",
         requestId: operation.pickupRequest.id,
-        message: "Demo fallback 상태에서는 실제 호스트 처리를 실행하지 않습니다.",
+        message: "연결 확인 중에는 호스트 처리를 실제로 실행하지 않습니다.",
       })
       return
     }
@@ -65,16 +65,16 @@ export function HostOperationBoard({ apiSourceKind, initialOperations }: HostOpe
     <section className="host-ops-panel" data-host-ops-mode={apiSourceKind}>
       {!isApiBacked ? (
         <div className="host-ops-warning" data-noninteractive="demo-host-action-blocked">
-          Demo fallback 데이터입니다. 입고, 보관함 배정, 픽업 완료는 실제 성공처럼 처리하지 않습니다.
+          연결 확인 중에는 입고, 보관함 배정, 픽업 완료를 실제로 반영하지 않습니다.
         </div>
       ) : null}
       <div className="host-ops-list">
         {operations.map((operation) => (
           <article className="host-op-card" key={operation.pickupRequest.id}>
             <div>
-              <span className="eyebrow">{operation.hub.cafeName}</span>
+              <span className="eyebrow">{translateCafeName(operation.hub.cafeName)}</span>
               <h3>{operation.operation.label}</h3>
-              <p>{operation.operation.safetyNote}</p>
+              <p>{safetyNoteLabel(operation.operation.safetyNote)}</p>
             </div>
             <dl>
               <div>
@@ -140,14 +140,33 @@ function toActionPayload(operation: ApiHostOperationItem): Record<string, string
 function defaultNote(action: ApiHostOperationAction): string {
   switch (action) {
     case "receive_package":
-      return "Host received package and checked exterior condition"
+      return "호스트가 택배 외관을 확인하고 입고 등록함"
     case "assign_storage":
-      return "Host assigned package to the visible storage slot"
+      return "호스트가 보이는 보관함에 택배를 배정함"
     case "complete_handoff":
-      return "Host verified pickup code and completed handoff"
+      return "호스트가 픽업 코드를 확인하고 전달을 완료함"
     default:
       return assertNever(action)
   }
+}
+
+function translateCafeName(value: string): string {
+  const names: Record<string, string> = {
+    "Garden Window Roasters": "가든윈도우 로스터스",
+    "Maple Counter Cafe": "메이플카운터 카페",
+    "River Locker Espresso": "리버라커 에스프레소",
+  }
+  return names[value] ?? value
+}
+
+function safetyNoteLabel(value: string): string {
+  const labels: Record<string, string> = {
+    "Demo fallback에서는 실제 픽업 완료 처리를 실행하지 않습니다.": "연결 확인 중에는 실제 픽업 완료로 반영하지 않습니다.",
+    "Host received package and checked exterior condition": "직원이 택배 외관을 확인했습니다.",
+    "Host assigned package to the visible storage slot": "택배를 확인 가능한 보관함에 배정했습니다.",
+    "Host verified pickup code and completed handoff": "픽업 코드를 확인하고 전달을 완료했습니다.",
+  }
+  return labels[value] ?? value
 }
 
 function isLoading(state: ActionState, requestId: string): boolean {

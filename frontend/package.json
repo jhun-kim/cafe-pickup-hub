@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "test:ui-polish": "node scripts/ui-polish-contract.mjs",
     "smoke:routes": "node scripts/route-smoke.mjs",
     "smoke:api-contract": "node scripts/api-contract-smoke.mjs"
   },

@@ -22,14 +22,14 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
 
   async function submitAction(item: ApiAdminTrustItem): Promise<void> {
     if (item.recommendedAction === null) {
-      setActionState({ kind: "error", incidentId: item.incident.id, message: "종결된 incident에는 실행 가능한 다음 조치가 없습니다." })
+      setActionState({ kind: "error", incidentId: item.incident.id, message: "종결된 분쟁에는 실행 가능한 다음 조치가 없습니다." })
       return
     }
     if (!isApiBacked) {
       setActionState({
         kind: "error",
         incidentId: item.incident.id,
-        message: "Demo fallback 상태에서는 실제 리스크 판단을 실행하지 않습니다.",
+        message: "연결 확인 중에는 리스크 조치를 실제로 실행하지 않습니다.",
       })
       return
     }
@@ -70,7 +70,7 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
     <section className="admin-trust-board" data-admin-trust-mode={apiSourceKind}>
       {!isApiBacked ? (
         <div className="admin-trust-warning" data-noninteractive="demo-admin-action-blocked">
-          Demo fallback 데이터입니다. 승인, 보류, 분쟁 처리는 실제 성공처럼 처리하지 않습니다.
+          연결 확인 중에는 승인, 보류, 분쟁 처리를 실제 완료로 반영하지 않습니다.
         </div>
       ) : null}
       <div className="admin-trust-list">
@@ -80,7 +80,7 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
               <span className={`risk-dot risk-dot--${item.risk.level}`} data-noninteractive="risk-level" />
               <div>
                 <strong>{riskLabel(item.risk.level)} · {statusLabel(item.incident.status)}</strong>
-                <p>{item.incident.reason}</p>
+                <p>{incidentReasonLabel(item.incident.reason)}</p>
               </div>
             </div>
             <dl>
@@ -89,15 +89,15 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
                 <dd>{item.incident.pickupRequestId}</dd>
               </div>
               <div>
-                <dt>Risk signal</dt>
-                <dd>{item.risk.signal}</dd>
+                <dt>위험 신호</dt>
+                <dd>{riskSignalLabel(item.risk.signal)}</dd>
               </div>
               <div>
-                <dt>Hold</dt>
+                <dt>보류</dt>
                 <dd>{holdLabel(item.risk.holdPayment, item.risk.holdSettlement)}</dd>
               </div>
               <div>
-                <dt>Audit</dt>
+                <dt>감사</dt>
                 <dd>{item.latestAuditLog?.action ?? "대기"}</dd>
               </div>
             </dl>
@@ -137,11 +137,11 @@ export function AdminTrustBoard({ apiSourceKind, initialItems }: AdminTrustBoard
 function defaultNote(action: ApiAdminTrustAction): string {
   switch (action) {
     case "start_review":
-      return "Admin reviewed trust evidence and started manual review"
+      return "운영자가 증빙을 확인하고 수동 검토를 시작함"
     case "resolve":
-      return "Admin resolved incident after evidence review"
+      return "운영자가 증빙 확인 후 분쟁을 해결함"
     case "escalate":
-      return "Admin escalated incident for senior risk review"
+      return "상위 운영 검토가 필요해 이관함"
     default:
       return assertNever(action)
   }
@@ -178,14 +178,34 @@ function statusLabel(status: ApiIncidentStatus): string {
 function riskLabel(level: ApiRiskLevel): string {
   switch (level) {
     case "high":
-      return "High risk"
+      return "고위험"
     case "medium":
-      return "Medium risk"
+      return "중간 위험"
     case "low":
-      return "Low risk"
+      return "낮은 위험"
     default:
       return assertNever(level)
   }
+}
+
+function incidentReasonLabel(value: string): string {
+  const labels: Record<string, string> = {
+    "Demo code mismatch review": "수령 코드 확인 필요",
+    "Demo overdue storage watch": "장기 보관 확인",
+    "pickup code mismatch after delegated pickup attempt": "대리 수령 시도 중 픽업 코드가 맞지 않음",
+    "storage exceeds 24 hour operating policy": "24시간 보관 기준을 초과함",
+  }
+  return labels[value] ?? value
+}
+
+function riskSignalLabel(value: string): string {
+  const labels: Record<string, string> = {
+    "Demo package is past pickup window": "픽업 시간이 지나 보관 상태를 확인해야 합니다.",
+    "Demo risk signal; no real hold is applied": "코드 재확인 안내가 필요하며 실제 보류는 적용되지 않았습니다.",
+    "package stored past pickup window": "택배가 픽업 시간 이후에도 보관 중",
+    "wrong code retry plus active friend authorization": "잘못된 코드 재시도와 활성 친구 권한이 함께 감지됨",
+  }
+  return labels[value] ?? value
 }
 
 function holdLabel(holdPayment: boolean, holdSettlement: boolean): string {

@@ -26,11 +26,11 @@ export function DashboardShell({ title, subtitle, active, children }: DashboardS
         <div className="dashboard-brand">
           <IconMotif index={0} label="카페 허브" size="md" />
           <div>
-            <strong>{active === "host" ? "모카우드 카페" : "Cafe Pickup Ops"}</strong>
+            <strong>{active === "host" ? "모카우드 카페" : "카페픽업 운영"}</strong>
             <span>{active === "host" ? "호스트 인증 완료" : "운영자 콘솔"}</span>
           </div>
         </div>
-        <nav aria-label="Dashboard navigation">
+        <nav aria-label="대시보드 내비게이션">
           {navItems.map((item) => (
             <Link
               key={`${item.label}-${item.href}`}

@@ -184,3 +184,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Korean readability and mobile admin overrides */
+.admin-trust-terminal {
+  align-items: center;
+  min-height: 46px;
+}
+
+.admin-trust-card dd {
+  overflow-wrap: anywhere;
+}
+
+.admin-trust-card .primary-button {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .admin-trust-card dl {
+    grid-template-columns: 1fr;
+  }
+}

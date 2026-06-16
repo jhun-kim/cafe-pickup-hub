@@ -15,7 +15,7 @@ export default async function HostPage() {
   return (
     <DashboardShell title="안녕하세요, 호스트님" subtitle="오늘의 입고, 보관, 픽업 완료 작업을 API 상태 기준으로 처리하세요." active="host">
       <section className="source-banner" data-api-source={sourceKind}>
-        <strong>{sourceKind === "api" ? "API 상태: live v1" : "API 상태: demo fallback"}</strong>
+        <strong>{sourceKind === "api" ? "서버 연결됨" : "데모 데이터 표시 중"}</strong>
         <span>{hostData.source.apiBaseUrl}</span>
         {sourceKind === "demo" ? <span>실제 호스트 작업 성공으로 표시하지 않습니다.</span> : null}
       </section>
@@ -55,7 +55,7 @@ export default async function HostPage() {
           <IconMotif index={1} label="" size="md" />
           <span>작업 대기</span>
           <strong>{operations.length}</strong>
-          <p>live/demo source 기준</p>
+          <p>서버/데모 데이터 기준</p>
         </article>
         <article className="metric-card" data-noninteractive="host-operation-metric">
           <IconMotif index={2} label="" size="md" />
@@ -84,7 +84,7 @@ export default async function HostPage() {
               <h2>호스트 운영 작업</h2>
               <p>입고 등록 → 보관함 배정 → 픽업 완료 순서로만 처리됩니다.</p>
             </div>
-            <StatusPill tone={sourceKind === "api" ? "green" : "coral"}>{sourceKind === "api" ? "Live" : "Demo"}</StatusPill>
+            <StatusPill tone={sourceKind === "api" ? "green" : "coral"}>{sourceKind === "api" ? "실시간" : "데모"}</StatusPill>
           </div>
           <HostOperationBoard apiSourceKind={sourceKind} initialOperations={operations} />
         </article>

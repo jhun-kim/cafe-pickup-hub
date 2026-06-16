@@ -123,3 +123,19 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* One-thumb Korean dashboard overrides */
+.source-banner {
+  line-height: 1.35;
+}
+
+.host-op-card .primary-button {
+  min-width: 124px;
+}
+
+@media (max-width: 860px) {
+  .host-op-card .primary-button {
+    width: 100%;
+  }
+}

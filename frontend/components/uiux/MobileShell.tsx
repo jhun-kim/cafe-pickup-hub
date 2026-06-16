@@ -10,10 +10,10 @@ type MobileShellProps = {
 
 const navItems = [
   { key: "home", label: "홈", href: "/", icon: 0 },
-  { key: "search", label: "검색", href: "/", icon: 4 },
-  { key: "pickup", label: "내 픽업", href: "/pickup-flow", icon: 1 },
-  { key: "friend", label: "친구", href: "/friend-permission", icon: 3 },
-  { key: "more", label: "더보기", href: "/host", icon: 5 },
+  { key: "search", label: "카페 찾기", href: "/", icon: 4 },
+  { key: "pickup", label: "예약", href: "/pickup-flow", icon: 1 },
+  { key: "friend", label: "친구 공유", href: "/friend-permission", icon: 3 },
+  { key: "more", label: "도움", href: "/#help", icon: 5 },
 ] as const
 
 export function MobileShell({ active, children }: MobileShellProps) {
@@ -25,7 +25,7 @@ export function MobileShell({ active, children }: MobileShellProps) {
           <span className="phone-status__icons">●●●</span>
         </div>
         <div className="phone-content">{children}</div>
-        <nav className="bottom-nav" aria-label="Mobile app navigation">
+        <nav className="bottom-nav" aria-label="모바일 앱 내비게이션">
           {navItems.map((item) => (
             <Link
               key={item.key}
