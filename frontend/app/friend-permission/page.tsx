@@ -18,14 +18,14 @@ export default async function FriendPermissionPage() {
       <header className="mobile-header">
         <div>
           <h1>친구에게 픽업 권한 공유</h1>
-          <p>일회용 코드, 만료 시간, 취소와 사용 상태를 live API 기준으로 관리하세요.</p>
+          <p>일회용 코드, 만료 시간, 취소 상태를 한 화면에서 쉽게 관리하세요.</p>
         </div>
       </header>
 
       <section className="source-banner" data-api-source={friendData.source.kind}>
-        <strong>{friendData.source.kind === "api" ? "API 상태: live v1" : "API 상태: demo fallback"}</strong>
+        <strong>{friendData.source.kind === "api" ? "서버 연결됨" : "데모 데이터 표시 중"}</strong>
         <span>{friendData.source.apiBaseUrl}</span>
-        {friendData.source.kind === "demo" ? <span>실제 친구 권한 성공으로 표시하지 않습니다.</span> : null}
+        {friendData.source.kind === "demo" ? <span>실제 친구 권한 완료로 표시하지 않습니다.</span> : null}
       </section>
 
       <section className="detail-card" data-noninteractive="package-summary">

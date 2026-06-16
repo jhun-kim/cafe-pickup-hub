@@ -23,7 +23,7 @@ export function BookingForm({ apiSourceKind, hubId, hubName, priceLabel }: Booki
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault()
     if (!isApiBacked) {
-      setCreateState({ kind: "error", message: "Demo fallback 상태에서는 실제 예약을 생성하지 않습니다." })
+      setCreateState({ kind: "error", message: "연결 확인 중에는 예약을 실제로 생성하지 않습니다." })
       return
     }
 
@@ -69,7 +69,7 @@ export function BookingForm({ apiSourceKind, hubId, hubName, priceLabel }: Booki
     <section id="pickup-booking" className="booking-panel" data-booking-mode={apiSourceKind}>
       <div className="panel-header">
         <div>
-          <p className="eyebrow">Create pickup request</p>
+          <p className="eyebrow">픽업 예약 만들기</p>
           <h2>픽업 예약 시작</h2>
           <p>
             {hubName} · {priceLabel}
@@ -78,8 +78,8 @@ export function BookingForm({ apiSourceKind, hubId, hubName, priceLabel }: Booki
       </div>
 
       {!isApiBacked ? (
-        <div className="booking-warning" data-noninteractive="demo-create-blocked">
-          Demo fallback 데이터입니다. 실제 예약 성공처럼 처리하지 않으며 backend 연결 후 생성할 수 있습니다.
+        <div className="booking-warning" data-noninteractive="demo-create-blocked" role="status">
+          연결 확인 중에는 예약을 실제로 생성하지 않습니다. 서버 연결 후 만들 수 있습니다.
         </div>
       ) : null}
 
@@ -112,14 +112,14 @@ export function BookingForm({ apiSourceKind, hubId, hubName, priceLabel }: Booki
       </form>
 
       {createState.kind === "success" ? (
-        <div className="booking-confirmation" data-create-result="success">
+        <div className="booking-confirmation" data-create-result="success" role="status" aria-live="polite">
           <strong>예약 생성 완료</strong>
-          <span>{createState.requestId}</span>
-          <span>{createState.status}</span>
+          <span>예약번호 {createState.requestId}</span>
+          <span>상태 {createState.status}</span>
         </div>
       ) : null}
       {createState.kind === "error" ? (
-        <div className="booking-error" data-create-result="error">
+        <div className="booking-error" data-create-result="error" role="alert">
           {createState.message}
         </div>
       ) : null}

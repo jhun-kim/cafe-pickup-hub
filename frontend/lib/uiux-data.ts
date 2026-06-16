@@ -85,7 +85,7 @@ export const flowSteps = [
   {
     eyebrow: "STEP 2",
     title: "보관 슬롯 예약",
-    body: "받을 물품 크기, 보관 시간 창, 배송 메모를 넣어 StorageSlot을 예약합니다.",
+    body: "받을 물품 크기, 보관 시간, 배송 메모를 넣어 보관함을 예약합니다.",
     action: "A102 예약",
     detailTitle: "A102 선반",
     detailMeta: "오늘 18:00까지 · 소형 택배",
@@ -95,7 +95,7 @@ export const flowSteps = [
   {
     eyebrow: "STEP 3",
     title: "입고 알림 확인",
-    body: "카페 직원이 Package 도착을 확인하면 사진 메모와 준비 상태 알림을 받습니다.",
+    body: "카페 직원이 택배 도착을 확인하면 사진 메모와 준비 상태 알림을 받습니다.",
     action: "도착 알림 보기",
     detailTitle: "입고 완료",
     detailMeta: "직원 확인 · 13:12 도착",
@@ -105,7 +105,7 @@ export const flowSteps = [
   {
     eyebrow: "STEP 4",
     title: "보안 픽업",
-    body: "일회용 코드나 대리 수령 권한을 제시하고 PickupRequest를 완료합니다.",
+    body: "일회용 코드나 대리 수령 권한을 제시하고 픽업을 완료합니다.",
     action: "친구에게 공유",
     detailTitle: "픽업 코드",
     detailMeta: "482 913 · 20:30 만료",

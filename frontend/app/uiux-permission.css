@@ -92,8 +92,48 @@
   align-items: center;
 }
 
+.permission-code-label {
+  min-width: 0;
+}
+
 .permission-card button:disabled,
 .permission-form input:disabled {
+  background: rgba(91, 57, 44, 0.1);
+  color: #5f6f67;
   cursor: not-allowed;
-  opacity: 0.62;
+  opacity: 1;
+}
+
+
+/* One-thumb Korean mobile overrides */
+.friend-option {
+  min-height: 58px;
+}
+
+.permission-form input {
+  min-height: 50px;
+  padding: 13px 14px;
+}
+
+.permission-form--inline {
+  grid-template-columns: minmax(0, 1fr) minmax(104px, auto);
+}
+
+.permission-form--inline .ghost-button,
+.permission-card > .ghost-button {
+  min-height: 50px;
+}
+
+.permission-card > .ghost-button {
+  width: 100%;
+}
+
+@media (max-width: 430px) {
+  .detail-card {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+
+  .permission-form--inline {
+    grid-template-columns: 1fr;
+  }
 }

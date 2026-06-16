@@ -18,8 +18,10 @@
   --panel: #fffaf0;
   --matcha: #4f7d5d;
   --leaf: #9fbd63;
-  --coral: #e86f51;
+  --coral: #bf4a32;
+  --coral-soft: #e86f51;
   --coffee: #5b392c;
+  --focus: #1f5f43;
   --line: rgba(23, 32, 28, 0.14);
   --shadow: 0 28px 70px rgba(40, 51, 44, 0.16);
 }
@@ -30,6 +32,21 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -49,4 +66,15 @@ a {
 
 main {
   min-height: 100vh;
+}
+
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(31, 95, 67, 0.16);
+}
+
+:where(button, input, select, textarea):disabled {
+  cursor: not-allowed;
 }

@@ -56,19 +56,25 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   border: 1px solid rgba(91, 57, 44, 0.14);
   font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  white-space: normal;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   cursor: pointer;
 }
 
 .primary-button {
-  min-height: 46px;
+  min-height: 54px;
   border-color: transparent;
-  border-radius: 18px;
+  border-radius: 20px;
   background: var(--coral);
   color: white;
-  padding: 0 18px;
-  box-shadow: 0 12px 24px rgba(232, 111, 81, 0.22);
+  padding: 0 20px;
+  box-shadow: 0 12px 24px rgba(191, 74, 50, 0.24);
 }
 
 .primary-button--full {
@@ -76,7 +82,7 @@
 }
 
 .ghost-button {
-  min-height: 42px;
+  min-height: 50px;
   border-radius: 16px;
   background: rgba(255, 250, 240, 0.72);
   color: var(--coffee);
@@ -84,8 +90,8 @@
 }
 
 .small-cta {
-  min-width: 62px;
-  min-height: 38px;
+  min-width: 70px;
+  min-height: 46px;
   border: 0;
   border-radius: 999px;
   background: var(--coral);
@@ -107,6 +113,8 @@
   padding: 0 9px;
   font-size: 0.76rem;
   font-weight: 850;
+  line-height: 1.15;
+  text-align: center;
 }
 
 .status-pill--green {
@@ -116,7 +124,7 @@
 
 .status-pill--coral {
   background: rgba(232, 111, 81, 0.14);
-  color: #cf4f36;
+  color: #9f3b29;
 }
 
 .status-pill--neutral {
@@ -130,5 +138,14 @@
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0;
-  text-transform: uppercase;
+  text-transform: none;
+}
+
+button.primary-button:disabled,
+button.ghost-button:disabled,
+button.small-cta:disabled {
+  cursor: not-allowed;
+  background: rgba(91, 57, 44, 0.1);
+  color: #5f6f67;
+  opacity: 1;
 }

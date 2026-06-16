@@ -1,6 +1,6 @@
 type IconMotifProps = {
   readonly index: 0 | 1 | 2 | 3 | 4 | 5
-  readonly label: string
+  readonly label?: string
   readonly size?: "sm" | "md" | "lg"
 }
 
@@ -14,12 +14,15 @@ const positions = {
 } as const
 
 export function IconMotif({ index, label, size = "md" }: IconMotifProps) {
+  const accessibilityProps = label
+    ? { "aria-label": label, role: "img" }
+    : { "aria-hidden": true }
+
   return (
     <span
       className={`motif motif--${size}`}
       style={{ backgroundPosition: positions[index] }}
-      role="img"
-      aria-label={label}
+      {...accessibilityProps}
     />
   )
 }

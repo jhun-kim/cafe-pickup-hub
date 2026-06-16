@@ -30,12 +30,21 @@
   background: white;
   color: var(--ink);
   font: inherit;
-  padding: 12px;
+  min-height: 50px;
+  padding: 13px 14px;
 }
 
 .booking-form textarea {
   min-height: 86px;
   resize: vertical;
+}
+
+.booking-form input:disabled,
+.booking-form select:disabled,
+.booking-form textarea:disabled {
+  background: rgba(91, 57, 44, 0.1);
+  color: #5f6f67;
+  opacity: 1;
 }
 
 .booking-warning,

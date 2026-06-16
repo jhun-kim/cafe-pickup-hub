@@ -4,8 +4,7 @@ const checks = [
   {
     path: "/",
     markers: [
-      "근처 안전 카페 픽업 허브",
-      "API 상태",
+      "오늘 받을 택배, 가까운 카페에 안전하게",
       "data-api-source=",
       "href=\"/pickup-flow\"",
       "data-noninteractive=\"home-alert-preview\"",
@@ -16,8 +15,7 @@ const checks = [
   {
     path: "/pickup-flow",
     markers: [
-      "Hub 발견부터 보안 픽업까지",
-      "API 상태",
+      "지금 할 일만 크게, 엄지손가락으로 예약까지.",
       "data-api-source=",
       "픽업 예약 시작",
       "id=\"pickup-booking\"",
@@ -35,7 +33,7 @@ const checks = [
   },
   {
     path: "/admin",
-    markers: ["API 상태", "data-api-source=", "data-admin-trust-mode=", "분쟁 / 리스크 판단", "Audit log"],
+    markers: ["data-api-source=", "data-admin-trust-mode=", "분쟁 / 리스크 판단", "감사 기록"],
   },
 ]
 

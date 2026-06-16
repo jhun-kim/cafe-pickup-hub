@@ -62,7 +62,7 @@ const expectedSource = process.env.API_CONTRACT_EXPECT_SOURCE ?? "api"
 const futureExpiry = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
 
 if (baseUrl) {
-  const homeSourceMarker = expectedSource === "demo" ? "API 상태: demo fallback" : "Maple Counter Cafe"
+  const homeSourceMarker = expectedSource === "demo" ? "데모 데이터 표시 중" : "Maple Counter Cafe"
   const flowSourceMarker = expectedSource === "demo" ? "demo-pickup-ready" : "pickup-ready-001"
   const routeChecks = [
     {
@@ -70,7 +70,6 @@ if (baseUrl) {
       markers: [
         "data-api-source=",
         homeSourceMarker,
-        "API 상태",
         "data-noninteractive=\"home-alert-preview\"",
         "data-noninteractive=\"home-location-preview\"",
         "data-noninteractive=\"home-search-preview\"",
@@ -78,7 +77,7 @@ if (baseUrl) {
     },
     {
       path: "/pickup-flow",
-      markers: ["data-api-source=", flowSourceMarker, "API 상태", "data-booking-mode=", "id=\"pickup-booking\"", "href=\"#pickup-booking\""],
+      markers: ["data-api-source=", flowSourceMarker, "data-booking-mode=", "id=\"pickup-booking\"", "href=\"#pickup-booking\""],
     },
     {
       path: "/host",
